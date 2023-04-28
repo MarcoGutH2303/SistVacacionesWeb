@@ -1,0 +1,58 @@
+﻿<table id="tblPersonal" class="display table cell-border table-hover pt-2 table-style">
+    <thead class="thead-degrad">
+        <tr>
+            <th>#</th>
+            <th>Nombre</th>
+            <th>Tipo Documento</th>
+            <th>N° Documento</th>
+            <th>Cargo</th>
+            <th>Área</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody class="tbody-style">
+    </tbody>
+</table>
+
+<script>
+    var tabladata;
+    tabladata = $("#tblPersonal").DataTable({
+        language: {
+            "url": "/Scripts/DataTables/json/es_es.json"
+        },
+        responsive: true,
+        ordering: true,
+        "ajax": {
+            url: '@Url.Action("ListarPersonal", "Personal")',
+            type: "GET",
+            dataType: "json"
+        },
+        "columns": [
+            { "data": "Correlativo" },
+            { "data": "NombreCompleto" },
+            { "data": "NombreTipoDocumento" },
+            { "data": "NumeroDocumento" },
+            { "data": "NombreCargo" },
+            { "data": "NombreArea" },
+            {
+                "data": "Estado",
+                "render": function (data, type, row) {
+                    if (row["Estado"] == 1) {
+                        return "Activo";
+                    }
+                    else if (row["Estado"] == 0) {
+                        return "Inactivo"
+                    }
+                }
+            },
+            {
+                "data": "CodPersonal",
+                "render": function (data, type, row) {
+                    return `<button type="button" class="btn btn-info btn-sm" onclick="SelectPersonal('` + data + `', '` + row["NombreCompleto"] + `')"><i class="fas fa-plus"></i></button>`;
+                }
+            }
+        ]
+    });
+</script>
+<script src="~/Scripts/UILayer/Varios/moment.js"></script>

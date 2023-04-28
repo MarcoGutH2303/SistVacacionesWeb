@@ -1,0 +1,106 @@
+﻿
+@{
+    ViewBag.Title = "Empresa";
+}
+
+<ol class="breadcrumb mb-3 mt-3">
+    <li class="breadcrumb-item active">Resumen</li>
+    <li class="breadcrumb-item active">Empresa</li>
+</ol>
+
+<div class="card">
+    <div class="card-header">
+        <i class="fas fa-building"></i> Lista De Empresas
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4">
+                <a class="btn btn-success d-block" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="NuevaEmpresa()"> Agregar Nueva Empresa</a>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<div id="divEmpresa">
+
+</div>
+
+<!--Modal-->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Registro De Empresa</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmEmpresa" method="post" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Razon Social</label>&nbsp;<label style="color: red">(*)</label>
+                            <input type="text" name="RazonSocial" class="form-control max-50" />
+                            <input type="text" name="CodEmpresa" id="CodEmpresa" hidden class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label>R.U.C.</label>&nbsp;<label style="color: red">(*)</label>
+                            <input type="text" name="Ruc" class="form-control max-11" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <label>Domicilio Fiscal</label>
+                            <input type="text" name="DomicilioFiscal" class="form-control max-100" />
+                        </div>
+                        <div class="col-md-4">
+                            <label>Telefono</label>
+                            <input type="text" name="Telefono" class="form-control max-20" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <label>Correo Electronico</label>&nbsp;<label style="color: red">(*)</label>
+                            <input type="text" name="CorreoElectronico" class="form-control crro max-100" />
+                        </div>
+                        <div class="col-md-4">
+                            <label>Estado</label>&nbsp;<label style="color: red">(*)</label>
+                            <select name="Estado" class="form-control" id="cboEstado">
+                                <option value="" selected="selected">-- Seleccione --</option>
+                                <option value="1">Activo</option>
+                                <option value="0">Inactivo</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="mt-1 mb-1 col-md-12">
+                            <div>Logo</div>
+                            <img width="100" height="100" id="imgLogo" name="Fotobase64" class="rounded-2" />
+                            <input type="file" accept=".jpeg, .jpg" id="fupLogo" name="logo_empresa" class="form-control mt-2" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnCerrarEmpresa" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" id="btnGuardarEmpresa" class="btn btn-primary" onclick="GuardarEmpresa()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="progress" class="modal">
+    <div class="center" style="position: fixed;top: 50%;left: 50%;-webkit-transform: translate(-50%, -50%);transform: translate(-50%, -50%);">
+        <div class="kt-section__content kt-section__content--border">
+            <div class="spinner-grow text-primary" role="status"> <span class="sr-only">Loading...</span> </div>
+            <div class="spinner-grow text-secondary" role="status"> <span class="sr-only">Loading...</span> </div>
+            <div class="spinner-grow text-success" role="status"> <span class="sr-only">Loading...</span> </div>
+            <div class="spinner-grow text-danger" role="status"> <span class="sr-only">Loading...</span> </div>
+            <div class="spinner-grow text-warning" role="status"> <span class="sr-only">Loading...</span> </div>
+            <div class="spinner-grow text-info" role="status"> <span class="sr-only">Loading...</span> </div>
+            <div class="spinner-grow text-light" role="status"> <span class="sr-only">Loading...</span> </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/UILayer/Varios/sweetalert.js"></script>
+<script src="~/Scripts/UILayer/Varios/generic.js"></script>
+<script src="~/Scripts/UILayer/Empresa/Empresa.js"></script>

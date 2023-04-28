@@ -1,0 +1,213 @@
+﻿
+@{
+    ViewBag.Title = "Personal";
+}
+
+<ol class="breadcrumb mb-3 mt-3">
+    <li class="breadcrumb-item active">Personal</li>
+    <li class="breadcrumb-item active">Personal</li>
+</ol>
+
+<div class="card">
+    <div class="card-header">
+        <i class="fas fa-user-friends"></i> Lista De Personal
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4">
+                <a class="btn btn-success d-block" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="NuevoPersonal()"> Agregar Nuevo Personal</a>
+            </div>
+            <div class="col-md-4">
+                <a class="btn btn-primary d-block" onclick="DescargarPlantilla()"> Descargar Plantilla</a>
+            </div>
+            <div class="col-md-4">
+                <a class="btn btn-secondary d-block" data-bs-toggle="modal" data-bs-target="#staticBackdrop1" onclick="CargarPlantilla()"> Cargar Plantilla</a>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<div id="divPersonal">
+
+</div>
+
+<!--Modal-->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Registro De Personal</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <ul class="nav nav-tabs p-3 pb-0 mb-1 nav-tabs-line nav-tabs-line-primary" id="pills-tab" role="tablist" >
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" style="border-color: white" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Datos Personales</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" style="border-color: white" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Datos Laborales</button>
+                </li>
+            </ul>
+            <form id="frmPersonal" method="post" enctype="multipart/form-data">
+                <div class="tab-content" id="pills-tabContent">
+                    <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label>Código</label>
+                                    <input type="text" name="CodPersonal" id="CodPersonal" class="form-control" readonly placeholder="autogenerado" />
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Código Anterior</label>
+                                    <input type="text" name="CodigoAnterior" class="form-control max-50" />
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Nombre(s)</label>&nbsp;<label style="color: red">(*)</label>
+                                    <input type="text" name="Nombre" class="form-control max-50" />
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Apellido(s)</label>&nbsp;<label style="color: red">(*)</label>
+                                    <input type="text" name="Apellido" class="form-control max-50" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label>Tipo Documento</label>&nbsp;<label style="color: red">(*)</label>
+                                    <select name="CodTipoDocumento" class="form-control o" id="cboTipoDocumento">
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label>N° Documento</label>&nbsp;<label style="color: red">(*)</label>
+                                    <input type="text" name="NumeroDocumento" class="form-control max-50" />
+                                </div>
+                                <div class="col-md-4">
+                                    <label>Sexo</label>&nbsp;<label style="color: red">(*)</label>
+                                    <select name="Sexo" class="form-control" id="cboGenero">
+                                        <option value="" selected>--Seleccione--</option>
+                                        <option value="1">Masculino</option>
+                                        <option value="2">Femenino</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <label>Dirección</label>
+                                    <input type="text" name="Direccion" class="form-control max-100" />
+                                </div>
+                                <div class="col-md-4">
+                                    <label>Telefono</label>
+                                    <input type="text" name="Telefono" class="form-control max-20" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <label>Correo Electronico</label>&nbsp;<label style="color: red">(*)</label>
+                                    <input type="email" name="CorreoElectronico" class="form-control max-100 crro" />
+                                </div>
+                                <div class="col-md-4">
+                                    <label>Fecha Nacimiento</label>&nbsp;<label style="color: red">(*)</label>
+                                    <input type="date" name="FechaNacimiento" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label>Centro Costo</label>&nbsp;<label style="color: red">(*)</label>
+                                    <select name="CodCentroCosto" class="form-control" id="cboCentroCosto" onchange="CentroCosto()">
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label>Área</label>&nbsp;<label style="color: red">(*)</label>
+                                    <select name="CodArea" class="form-control" id="cboArea" onchange="Area()">
+                                        <option value="" selected="selected">-- Seleccione --</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label>Cargo</label>&nbsp;<label style="color: red">(*)</label>
+                                    <select name="CodCargo" class="form-control" id="cboCargo">
+                                        <option value="" selected="selected">-- Seleccione --</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label>Fecha Ingreso</label>&nbsp;<label style="color: red">(*)</label>
+                                    <input type="date" name="FechaIngreso" class="form-control" />
+                                </div>
+                                <div class="col-md-8">
+                                    <label>Jefe</label>
+                                    <select name="CodJefe" class="form-control" id="cboJefe" omchange="Jefe()">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label>Estado</label>&nbsp;<label style="color: red">(*)</label>
+                                    <select name="Estado" class="form-control" id="cboEstado">
+                                        <option value="" selected="selected">--Seleccione--</option>
+                                        <option value="1">Activo</option>
+                                        <option value="0">Inactivo</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="modal-footer">
+                <button type="button" id="btnCerrarPersonal" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" id="btnGuardarPersonal" class="btn btn-primary" onclick="GuardarPersonal()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Modal-->
+<div class="modal fade" id="staticBackdrop1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Cargar Plantilla - Personal</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="frmPlantillaPersonal" method="post" enctype="multipart/form-data">
+                <div class="tab-content" id="pills-tabContent">
+                    <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    <label for="formFile" class="form-label">Seleccione la plantilla:</label>
+                                    <input class="form-control" type="file" id="plantillaPersonal" name="plantillaPersonal">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="modal-footer">
+                <button type="button" id="btnCerrarCarga" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" id="btnCargar" class="btn btn-primary" onclick="ProcesoCarga()">Cargar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="progress" class="modal">
+    <div class="center" style="position: fixed;top: 50%;left: 50%;-webkit-transform: translate(-50%, -50%);transform: translate(-50%, -50%);">
+        <div class="kt-section__content kt-section__content--border">
+            <div class="spinner-grow text-primary" role="status"> <span class="sr-only">Loading...</span> </div>
+            <div class="spinner-grow text-secondary" role="status"> <span class="sr-only">Loading...</span> </div>
+            <div class="spinner-grow text-success" role="status"> <span class="sr-only">Loading...</span> </div>
+            <div class="spinner-grow text-danger" role="status"> <span class="sr-only">Loading...</span> </div>
+            <div class="spinner-grow text-warning" role="status"> <span class="sr-only">Loading...</span> </div>
+            <div class="spinner-grow text-info" role="status"> <span class="sr-only">Loading...</span> </div>
+            <div class="spinner-grow text-light" role="status"> <span class="sr-only">Loading...</span> </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/UILayer/Varios/sweetalert.js"></script>
+<script src="~/Scripts/UILayer/Varios/generic.js"></script>
+<script src="~/Scripts/UILayer/Personal/Personal.js"></script>

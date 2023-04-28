@@ -1,0 +1,56 @@
+﻿<table id="tblEmpresa" class="display table cell-border table-hover pt-2 table-style">
+    <thead class="thead-degrad">
+        <tr>
+            <th>#</th>
+            <th>Razon Social</th>
+            <th>Ruc</th>
+            <th>Domicilio Fiscal</th>
+            <th>Telefono</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody class="tbody-style">
+    </tbody>
+</table>
+
+<script>
+    var tabladata;
+    tabladata = $("#tblEmpresa").DataTable({
+        language: {
+            "url": "/Scripts/DataTables/json/es_es.json"
+        },
+        responsive: true,
+        ordering: true,
+        "ajax": {
+            url: '@Url.Action("ListarEmpresa", "Empresa")',
+            type: "GET",
+            dataType: "json"
+        },
+        "columns": [
+            { "data": "Correlativo" },
+            { "data": "RazonSocial" },
+            { "data": "Ruc" },
+            { "data": "DomicilioFiscal" },
+            { "data": "Telefono" },
+            {
+                "data": "Estado",
+                "render": function (data, type, row) {
+                    if (row["Estado"] == 1) {
+                        return "Activo";
+                    }
+                    else if (row["Estado"] == 0) {
+                        return "Inactivo"
+                    }
+                }
+            },
+            {
+                "data": "CodEmpresa",
+                "render": function (data, type, row) {
+                    return `<button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="EditarEmpresa('` + data + `')"><i class="fas fa-pen"></i></button>` +
+                        `<button type="button" class="btn btn-danger btn-sm ms-2" onclick="EliminarEmpresa('` + data + `')"><i class="fas fa-trash"></i></button>`;
+                }
+            }
+        ]
+    });
+</script>

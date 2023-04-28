@@ -1,0 +1,57 @@
+﻿@using SistVacacionesWeb.Domain.Models;
+@{
+    List<LoginModel> listaCabecera = (List<LoginModel>)Session["cabecera"];
+}
+@foreach (var oLoginEntCabecera in listaCabecera)
+{
+    if (Rol.Value == 2)
+    {
+        if (oLoginEntCabecera.Nombre == "Mantenimiento")
+        {
+            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                <div class="sb-nav-link-icon"><i class="fas fa-cogs"></i></div>
+                Mantenimiento
+                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+            </a>
+            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                <nav class="sb-sidenav-menu-nested nav">
+                    <a class="nav-link" href="@Url.Action("TipoDocumento", "TipoDocumento")">Tipo Documento</a>
+                    <a class="nav-link" href="@Url.Action("CentroCosto", "CentroCosto")" id="load">Centro De Costo</a>
+                    <a class="nav-link" href="@Url.Action("Area", "Area")">Área</a>
+                    <a class="nav-link" href="@Url.Action("Cargo", "Cargo")">Cargo</a>
+                </nav>
+            </div>
+        }
+        else if (oLoginEntCabecera.Nombre == "Reporte")
+        {
+            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts1" aria-expanded="false" aria-controls="collapseLayouts">
+                <div class="sb-nav-link-icon"><i class="fas fa-file-pdf"></i></div>
+                Reportes
+                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+            </a>
+            <div class="collapse" id="collapseLayouts1" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                <nav class="sb-sidenav-menu-nested nav">
+                    <a class="nav-link" href="@Url.Action("ReporteSolicitud", "Reporte")">Solicitud</a>
+                    <a class="nav-link" href="@Url.Action("ReporteAutorizacion", "Reporte")">Autorización</a>
+                    <a class="nav-link" href="@Url.Action("ReporteVacaciones", "Reporte")">Vacaciones</a>
+                </nav>
+            </div>
+        }
+        else
+        {
+            <a class="nav-link" href="@Url.Action(oLoginEntCabecera.ActionName, oLoginEntCabecera.ControllerName)">
+                <div class="sb-nav-link-icon"><i class="@oLoginEntCabecera.Icon"></i></div>
+                @oLoginEntCabecera.Nombre
+            </a>
+        }
+    }
+    else if (Rol.Value == 1)
+    {
+        <a class="nav-link" href="@Url.Action(oLoginEntCabecera.ActionName, oLoginEntCabecera.ControllerName)">
+            <div class="sb-nav-link-icon"><i class="@oLoginEntCabecera.Icon"></i></div>
+            @oLoginEntCabecera.Nombre
+        </a>
+    }
+}
+
+

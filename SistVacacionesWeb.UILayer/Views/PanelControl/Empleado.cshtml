@@ -1,0 +1,70 @@
+﻿
+@{
+    ViewBag.Title = "Empleado";
+}
+
+<ol class="breadcrumb mb-3 mt-3">
+    <li class="breadcrumb-item active">Resumen</li>
+    <li class="breadcrumb-item active">Panel De Control</li>
+</ol>
+
+<div class="card mb-3">
+    <div class="card-header">
+        <i class="fas fa-tachometer-alt"></i> Panel De Control
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-3 col-md-6">
+        <div class="card bg-primary text-white mb-4">
+            <div class="card-body">
+                <div class="row" style="height: 40px; margin-top: -10px">
+                    <label style="font-size: 30px" id="labelSolicitudPendiente"></label>
+                </div>
+                <div class="row" style="height: 15px">
+                    <label style="font-size: 15px; align-items: center;" id="labelSolicitudPendienteTitulo">Solicitudes Pendiente</label>
+                </div>
+            </div>
+            <div class="card-footer d-flex align-items-center justify-content-between">
+                <a class="small text-white stretched-link" href="@Url.Action("Solicitud", "Solicitud")">Ver Detalles</a>
+                <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card bg-info text-white mb-4">
+            <div class="card-body">
+                <div class="row" style="height: 40px; margin-top: -10px">
+                    <label style="font-size: 30px" id="labelSolicitudResuelto"></label>
+                </div>
+                <div class="row" style="height: 15px">
+                    <label style="font-size: 15px; align-items: center" id="labelSolicitudResueltoTitulo">Autorizaciones</label>
+                </div>
+            </div>
+            <div class="card-footer d-flex align-items-center justify-content-between">
+                <a class="small text-white stretched-link" href="@Url.Action("PanelAutorizacion", "PanelAutorizacion")">Ver Detalles</a>
+                <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card bg-success text-white mb-4">
+            <div class="card-body">
+                <div class="row" style="height: 40px; margin-top: -10px">
+                    <label style="font-size: 30px" id="labelVacacionesPeriodo"></label>
+                </div>
+                <div class="row" style="height: 15px">
+                    <label style="font-size: 15px; align-items: center" id="labelVacacionesPeriodoTitulo">Periodos Vacacionales</label>
+                </div>
+            </div>
+            <div class="card-footer d-flex align-items-center justify-content-between">
+                <a class="small text-white stretched-link" href="@Url.Action("PanelVacaciones", "PanelVacaciones")">Ver Detalles</a>
+                <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/UILayer/Varios/sweetalert.js"></script>
+<script src="~/Scripts/UILayer/Varios/generic.js"></script>
+<script src="~/Scripts/UILayer/PanelControl/PanelControlEmpleado.js"></script>

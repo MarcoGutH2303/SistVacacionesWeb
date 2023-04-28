@@ -1,0 +1,217 @@
+﻿
+@{
+    ViewBag.Title = "Usuario";
+}
+
+<ol class="breadcrumb mb-3 mt-3">
+    <li class="breadcrumb-item active">Usuario</li>
+    <li class="breadcrumb-item active">Usuario</li>
+</ol>
+
+<div class="card">
+    <div class="card-header">
+        <i class="fas fa-users"></i> Lista De Usuarios
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4">
+                <a class="btn btn-success d-block" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="NuevoUsuario()"> Agregar Nuevo Usuario</a>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<div id="divUsuario">
+
+</div>
+
+<!--Modal-->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Registro De Usuario</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmUsuario" method="post" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label> </label>
+                            <div>
+                                <a class="btn btn-primary" style="width: 47%" onclick="BuscarPersonal()" title="Buscar Personal"><span class="fas fa-search"></span> </a>
+                                <a class="btn btn-secondary" style="width: 47%" onclick="LimpiarPersonal()" title="Limpiar"><span class="fas fa-broom"></span> </a>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <label>Nombre(s)</label>&nbsp;<label style="color: red">(*)</label>
+                            <input type="text" name="NombrePersonal" class="form-control" id="NombrePersonal" readonly="readonly" />
+                            <input type="text" name="CodUsuario" hidden class="form-control" id="CodUsuario" />
+                            <input type="text" name="CodPersonal" hidden class="form-control" id="CodPersonal" />
+                        </div>
+                        <div class="col-md-5">
+                            <label>Apellido(s)</label>&nbsp;<label style="color: red">(*)</label>
+                            <input type="text" name="ApellidoPersonal" class="form-control" id="ApellidoPersonal" readonly="readonly" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Tipo Documento</label>&nbsp;<label style="color: red">(*)</label>
+                            <input type="text" name="NombreTipoDocumentoPersonal" class="form-control" id="NombreTipoDocumentoPersonal" readonly="readonly" />
+                        </div>
+                        <div class="col-md-6">
+                            <label>N° Documento</label>&nbsp;<label style="color: red">(*)</label>
+                            <input type="text" name="NumeroDocumentoPersonal" class="form-control" id="NumeroDocumentoPersonal" readonly />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>Usuario</label>&nbsp;<label style="color: red">(*)</label>
+                            <input type="text" name="Usuario" class="form-control" />
+                        </div>
+                        <div class="col-md-4">
+                            <label>Contraseña</label>&nbsp;<label style="color: red">(*)</label>
+                            <input type="password" name="Pass" class="form-control" />
+                        </div>
+                        <div class="col-md-4">
+                            <label>Rol</label>&nbsp;<label style="color: red">(*)</label>
+                            <select name="Rol" class="form-control" id="cboRol" onchange="ocRol('')">
+                                <option value="">--Seleccione--</option>
+                                <option value="1">Empleado</option>
+                                <option value="2">Administrador</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>Estado</label>
+                            <select name="Estado" class="form-control" id="cboEstado">
+                                <option value="">--Seleccione--</option>
+                                <option value="1">Activo</option>
+                                <option value="0">Inactivo</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="mt-1 mb-1 col-md-6">
+                            <div>Foto</div>
+                            <img width="100" height="100" id="imgFoto" name="Fotobase64" class="rounded-2" />
+                            <input type="file" accept=".jpeg, .jpg" id="fupFoto" name="foto_usuario" class="form-control mt-2" />
+                            <input type="text" name="id_empresa" readonly class="form-control" value="1" hidden="hidden" />
+                        </div>
+                        <div class="col-md-6">
+                            <p style="height: 15px">Elija las opciones que tendra acceso:</p>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label style="font-weight: bolder" for="checkgeneral">Selec. Todo</label>
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="checkbox" onchange="SeleccionarTodo()" id="checkgeneral" class="form-check-input" />
+                                </div>
+                            </div>
+                            <div class="o-0">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label> Empresa</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="checkbox" name="Empresa" value="1" class="form-check-input" />
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label> Mantenimiento</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="checkbox" name="Mantenimiento" value="1" class="form-check-input" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label> Concepto</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="checkbox" name="Concepto" value="1" class="form-check-input" />
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label> Personal</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="checkbox" name="Personal" value="1" class="form-check-input" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label> Autorizacion</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="checkbox" name="Autorizacion" value="1" class="form-check-input" />
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label> Vacaciones</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="checkbox" name="Vacaciones" value="1" class="form-check-input" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label> Reporte</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="checkbox" name="Reporte" value="1" class="form-check-input" />
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label> Usuario</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="checkbox" name="User" value="1" class="form-check-input" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnCerrarUsuario" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" id="btnGuardarUsuario" class="btn btn-primary" onclick="GuardarUsuario()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="staticBackdrop1" aria-labelledby="staticBackdropLabel1" aria-hidden="true" role="dialog">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel1">Personal - Activos</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="divPersonal">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnCerrarPersonal" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="progress" class="modal">
+    <div class="center" style="position: fixed;top: 50%;left: 50%;-webkit-transform: translate(-50%, -50%);transform: translate(-50%, -50%);">
+        <div >
+            <div class="spinner-grow text-primary" role="status"> <span class="sr-only">Loading...</span> </div>
+            <div class="spinner-grow text-secondary" role="status"> <span class="sr-only">Loading...</span> </div>
+            <div class="spinner-grow text-success" role="status"> <span class="sr-only">Loading...</span> </div>
+            <div class="spinner-grow text-danger" role="status"> <span class="sr-only">Loading...</span> </div>
+            <div class="spinner-grow text-warning" role="status"> <span class="sr-only">Loading...</span> </div>
+            <div class="spinner-grow text-info" role="status"> <span class="sr-only">Loading...</span> </div>
+            <div class="spinner-grow text-light" role="status"> <span class="sr-only">Loading...</span> </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/UILayer/Varios/sweetalert.js"></script>
+<script src="~/Scripts/UILayer/Varios/generic.js"></script>
+<script src="~/Scripts/UILayer/Usuario/Usuario.js"></script>

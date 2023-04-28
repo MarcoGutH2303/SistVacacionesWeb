@@ -1,0 +1,228 @@
+﻿
+@{
+    ViewBag.Title = "Vacaciones";
+}
+
+<ol class="breadcrumb mb-3 mt-3">
+    <li class="breadcrumb-item active">Vacaciones</li>
+    <li class="breadcrumb-item active">Vacaciones</li>
+</ol>
+
+<div class="card">
+    <div class="card-header">
+        <i class="fas fa-calendar-alt"></i> Lista De Periodos - Personal
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-2 pt-1">
+                <a class="btn btn-success d-block" data-bs-toggle="modal" data-bs-target="#staticBackdrop2" onclick="BuscarPersonal()"> Buscar Personal</a>
+            </div>
+            <div class="col-md-2 pt-1">
+                <a class="btn btn-success d-block" onclick="LimpiarPersonal()"> Limpiar</a>
+            </div>
+            <div class="col-md-2 pt-1">
+                <a class="btn btn-success d-block" id="btnNuevoPeriodo" onclick="NuevoVacacionesPeriodo()">Nuevo Periodo</a>
+            </div>
+            <div class="col-md-3 pt-1">
+                <a class="btn btn-success d-block" id="btnDescargarVacaciones" onclick="DescargarPlantillaVacaciones()">Descargar Plantilla</a>
+            </div>
+            <div class="col-md-3 pt-1">
+                <a class="btn btn-success d-block" id="btnCargarVacaciones" data-bs-toggle="modal" data-bs-target="#staticBackdrop3" onclick="CargarPlantillaVacaciones()">Cargar Plantilla</a>
+            </div>
+        </div>
+        <div class="row pt-3">
+            <div class="col-md-2 pt-2">
+                <label>Nombre Personal:</label>
+            </div>
+            <div class="col-md-7">
+                <input type="text" id="NombrePersonal" disabled class="form-control" />
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<div id="divVacacionesPeriodo">
+
+</div>
+
+<!--Modal-->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Registro De Vacaciones - Periodo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmVacacionesPeriodo" method="post" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>Código Periodo</label>
+                            <input type="text" name="CodVacacionesPeriodo" id="CodVacacionesPeriodo" readonly class="form-control" placeholder="autogenerado" />
+                            <input type="text" name="CodPersonal" id="CodPersonalPeriodo" class="form-control" hidden />
+                        </div>
+                        <div class="col-md-4">
+                            <label>Fecha Inicio Periodo</label>&nbsp;<label style="color: red">(*)</label>
+                            <input type="date" name="FechaInicioPeriodo" class="form-control" />
+                        </div>
+                        <div class="col-md-4">
+                            <label>Fecha Fin Periodo</label>&nbsp;<label style="color: red">(*)</label>
+                            <input type="date" name="FechaFinPeriodo" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>Dias Adquiridos</label>&nbsp;<label style="color: red">(*)</label>
+                            <input type="text" name="DiasAdquiridos" class="form-control" />
+                        </div>
+                        <div class="col-md-4">
+                            <label>Dias Consumidos</label>&nbsp;<label style="color: red">(*)</label>
+                            <input type="text" name="DiasConsumidos" class="form-control" />
+                        </div>
+                        <div class="col-md-4">
+                            <label>Dias Por Consumir</label>&nbsp;<label style="color: red">(*)</label>
+                            <input type="text" name="DiasPorConsumir" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>Estado</label>&nbsp;<label style="color: red">(*)</label>
+                            <select name="Estado" class="form-control" id="cboEstado">
+                                <option value="" selected>--Seleccione--</option>
+                                <option value="1">Vigente</option>
+                                <option value="2">Culminado</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnCerrarVacacionesPeriodo" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" id="btnGuardarVacacionesPeriodo" class="btn btn-primary" onclick="GuardarVacacionesPeriodo()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Modal-->
+<div class="modal fade" id="staticBackdrop1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel1">Registro De Vacaciones - Consumo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmVacacionesConsumo" method="post" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Código Periodo</label>
+                            <input type="text" name="CodVacacionesPeriodo" id="CodVacacionesPeriodoConsumo" class="form-control o" readonly />
+                            <input type="text" name="CodPersonal" id="CodPersonalConsumo" class="form-control" hidden />
+                        </div>
+                        <div class="col-md-6">
+                            <label>Código Consumo</label>
+                            <input type="text" name="CodVacacionesConsumo" id="CodVacacionesConsumoConsumo" class="form-control" placeholder="autogenerado" readonly />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>Fecha Inicio</label>&nbsp;<label style="color: red">(*)</label>
+                            <input type="date" name="FechaInicio" class="form-control" id="FechaInicio" onchange="CalcularDias()" />
+                        </div>
+                        <div class="col-md-4">
+                            <label>Fecha Fin</label>&nbsp;<label style="color: red">(*)</label>
+                            <input type="date" name="FechaFin" class="form-control" id="FechaFin" onchange="CalcularDias()" />
+                        </div>
+                        <div class="col-md-4">
+                            <label>Dias Uso</label>&nbsp;<label style="color: red">(*)</label>
+                            <input type="text" name="DiasUso" class="form-control" id="DiasUso" readonly />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>Dias Adquiridos</label>
+                            <input type="text" name="DiasAdquiridos" id="DiasAdquiridosConsumo" disabled class="form-control" />
+                        </div>
+                        <div class="col-md-4">
+                            <label>Dias Consumidos</label>
+                            <input type="text" name="DiasConsumidos" id="DiasConsumidosConsumo" disabled class="form-control" />
+                        </div>
+                        <div class="col-md-4">
+                            <label>Dias Por Consumir</label>
+                            <input type="text" name="DiasPorConsumir" id="DiasPorConsumirConsumo" disabled class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2 pt-2 pb-2">
+                            <a id="btnGuardarVacacionesConsumo" class="btn btn-outline-primary d-block" onclick="GuardarVacacionesConsumo()">Guardar</a>
+                        </div>
+                        <div class="col-md-2 pt-2 pb-2">
+                            <a id="btnNuevoVacacionesConsumo" class="btn btn-outline-secondary d-block" onclick="NuevoVacacionesConsumo()">Nuevo</a>
+                        </div>
+                    </div>
+                </form>
+                <div id="divVacacionesConsumo">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnCerrarConsumo" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel2">Personal - Activos</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="divPersonal">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnCerrarPersonal" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Modal-->
+<div class="modal fade" id="staticBackdrop3" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel3" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel3">Cargar Plantilla - Periodos</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="frmPlantillaPeriodo" method="post" enctype="multipart/form-data">
+                <div class="tab-content" id="pills-tabContent">
+                    <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    <label for="formFile" class="form-label">Seleccione la plantilla:</label>
+                                    <input class="form-control" type="file" id="plantillaPeriodo" name="plantillaPeriodo">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="modal-footer">
+                <button type="button" id="btnCerrarCarga" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" id="btnCargar" class="btn btn-primary" onclick="ProcesoCarga()">Cargar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/UILayer/Varios/sweetalert.js"></script>
+<script src="~/Scripts/UILayer/Varios/generic.js"></script>
+<script src="~/Scripts/UILayer/Vacaciones/Vacaciones.js"></script>
+<script src="~/Scripts/UILayer/Varios/moment.js"></script>

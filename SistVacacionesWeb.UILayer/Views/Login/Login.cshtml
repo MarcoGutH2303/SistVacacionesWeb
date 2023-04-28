@@ -1,0 +1,128 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/Recursos/Logo.ico" rel="shortcut icon" type="image/x-icon" />
+    <title>Login</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/complementos")
+    @Scripts.Render("~/bundles/bootstrap")
+    <style>
+        .gradient-custom {
+            /* fallback for old browsers */
+            background: #6a11cb;
+            /* Chrome 10-25, Safari 5.1-6 */
+            background: -webkit-linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1));
+            /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+            background: linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1))
+        }
+
+        .fondo-custom {
+            background-image: url("../../Recursos/closeup-of-gavel-judgement-concept.jpg");
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            /*background-color: #001B41;*/
+            background-color: #492417;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <section class="vh-100 fondo-custom">
+            <div class="container py-5 h-100">
+                <div class="row d-flex justify-content-center align-items-center h-100">
+                    <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                        <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                            <input type="hidden" id="hdfOculto" value="@Url.Content("~")" />
+                            <div class="card-body p-5 pt-4 pb-4 text-center">
+                                <form id="frmLogin" method="get">
+                                    <div class="mb-md-2 mt-md-2 pb-2">
+                                        <h2 class="fw-bold mb-2 mt-0 text-capitalize">Bienvenido al Sistema De Vacaciones</h2>
+                                        <br />
+                                        <p class="text-white-50 mb-3">Por favor, ingrese su Usuario, Contraseña y Empresa</p>
+                                        <div class="form-outline form-white mb-3">
+                                            <input type="text" id="usuario" class="form-control form-control-sm" name="usuario" placeholder="Usuario" />
+                                            <label class="form-label" for="usuario">Usuario</label>
+                                        </div>
+                                        <div class="form-outline form-white mb-3">
+                                            <input type="password" id="pass" class="form-control form-control-sm" name="pass" placeholder="Contraseña" />
+                                            <label class="form-label" for="pass">Contraseña</label>
+                                        </div>
+                                        <div class="form-outline form-white mb-3">
+                                            <select type="text" id="cboEmpresa" class="form-control form-control-sm" name="codEmpresa">
+                                            </select>
+                                            <label class="form-label" for="cboEmpresa">Empresa</label>
+                                        </div>
+                                        <input class="btn btn-outline-light btn-lg px-5" type="button" onclick="Login()" value="Ingresar" />
+                                        <br />
+                                    </div>
+                                    <p class="small"><a class="text-white-50" href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="RecuperarPass()">Olvidó su contraseña?</a></p>
+                                    @*<div>
+                                            <p class="mb-0">No tiene un Usuario? <a href="#!" class="text-white-50 fw-bold">Solicite</a></p>
+                                        </div>*@
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!--Modal-->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Recuperar Contraseña</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Usuario</label>
+                            <input type="text" name="UsuarioRecuperar" id="UsuarioRecuperar" class="form-control o max-50" autofocus />
+                        </div>
+                        <div class="col-md-6">
+                            <label>Empresa</label>
+                            <select name="codEmpresaRecuperar" class="form-control o" id="cboEmpresaRecuperar">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="btnCerrar" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" id="btnGuardar" class="btn btn-primary" onclick="EnviarCredencial()">Enviar Contraseña</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="progress" class="modal">
+        <div class="center" style="position: fixed;top: 50%;left: 50%;-webkit-transform: translate(-50%, -50%);transform: translate(-50%, -50%);">
+            <div class="kt-section__content kt-section__content--border">
+                <div class="spinner-grow text-primary" role="status"> <span class="sr-only">Loading...</span> </div>
+                <div class="spinner-grow text-secondary" role="status"> <span class="sr-only">Loading...</span> </div>
+                <div class="spinner-grow text-success" role="status"> <span class="sr-only">Loading...</span> </div>
+                <div class="spinner-grow text-danger" role="status"> <span class="sr-only">Loading...</span> </div>
+                <div class="spinner-grow text-warning" role="status"> <span class="sr-only">Loading...</span> </div>
+                <div class="spinner-grow text-info" role="status"> <span class="sr-only">Loading...</span> </div>
+                <div class="spinner-grow text-light" role="status"> <span class="sr-only">Loading...</span> </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/Scripts/UILayer/Varios/sweetalert.js"></script>
+    <script src="~/Scripts/UILayer/Varios/generic.js"></script>
+    <script src="~/Scripts/UILayer/Login/Login.js"></script>
+</body>
+</html>

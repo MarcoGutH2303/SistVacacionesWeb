@@ -1,0 +1,136 @@
+﻿
+@{
+    ViewBag.Title = "Solicitud";
+}
+
+<ol class="breadcrumb mb-3 mt-3">
+    <li class="breadcrumb-item active">Solicitud</li>
+    <li class="breadcrumb-item active">Solicitud</li>
+</ol>
+
+<div class="card">
+    <div class="card-header">
+        <i class="fas fa-cog"></i> Lista De Solicitudes Pendientes
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4">
+                <a class="btn btn-success d-block" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="NuevaSolicitud()"> Agregar Nueva Solicitud</a>
+            </div>
+            <div class="col-md-4">
+                <a class="btn btn-success d-block" data-bs-toggle="modal" data-bs-target="#staticBackdrop1" onclick="VerSolicitudGeneral()"> Ver Solicitud General</a>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<div id="divSolicitudPendiente">
+
+</div>
+
+<!--Modal-->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Registro De Solicitud</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmSolicitud" method="post" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>Código</label>
+                            <input type="text" name="CodSolicitud" class="form-control" placeholder="autogenerado" readonly />
+                        </div>
+                        <div class="col-md-4">
+                            <label>Fecha Solicitud</label>&nbsp;<label style="color: red">(*)</label>
+                            <input type="date" name="FechaSolicitud" class="form-control" />
+                            <input type="text" name="CodSolicitud" hidden class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>Concepto</label>&nbsp;<label style="color: red">(*)</label>
+                            <select name="CodConcepto" class="form-control" id="cboConcepto">
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label>Fecha Salida</label>&nbsp;<label style="color: red">(*)</label>
+                            <input type="datetime-local" name="FechaSalida" id="FechaSalida" class="form-control" onchange="CalculoTiempo()" onfocusout="CalculoTiempo()" />
+                        </div>
+                        <div class="col-md-4">
+                            <label>Fecha Retorno</label>&nbsp;<label style="color: red">(*)</label>
+                            <input type="datetime-local" name="FechaRetorno" id="FechaRetorno" class="form-control" onchange="CalculoTiempo()" onfocusout="CalculoTiempo()" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>N° Dias</label>&nbsp;<label style="color: red">(*)</label>
+                            <input type="text" name="NumeroDias" id="NumeroDias" readonly class="form-control" />
+                        </div>
+                        <div class="col-md-4">
+                            <label>N° Horas</label>&nbsp;<label style="color: red">(*)</label>
+                            <input type="text" name="NumeroHoras" id="NumeroHoras" readonly class="form-control" />
+                        </div>
+                        <div class="col-md-4">
+                            <label>N° Minutos</label>&nbsp;<label style="color: red">(*)</label>
+                            <input type="text" name="NumeroMinutos" id="NumeroMinutos" readonly class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>Estado</label>&nbsp;<label style="color: red">(*)</label>
+                            <select name="Estado" class="form-control" id="cboEstado">
+                                <option value="" selected="selected">--Seleccione--</option>
+                                <option value="1">Pendiente</option>
+                                <option value="2">Resuelto</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnCerrarSolicitud" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" id="btnGuardarSolicitud" class="btn btn-primary" onclick="GuardarSolicitud()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="staticBackdrop1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel1" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel1">Solicitudes</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="divSolicitud">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnCerrarSolicitudGeneral" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="progress" class="modal">
+    <div class="center" style="position: fixed;top: 50%;left: 50%;-webkit-transform: translate(-50%, -50%);transform: translate(-50%, -50%);">
+        <div class="kt-section__content kt-section__content--border">
+            <div class="spinner-grow text-primary" role="status"> <span class="sr-only">Loading...</span> </div>
+            <div class="spinner-grow text-secondary" role="status"> <span class="sr-only">Loading...</span> </div>
+            <div class="spinner-grow text-success" role="status"> <span class="sr-only">Loading...</span> </div>
+            <div class="spinner-grow text-danger" role="status"> <span class="sr-only">Loading...</span> </div>
+            <div class="spinner-grow text-warning" role="status"> <span class="sr-only">Loading...</span> </div>
+            <div class="spinner-grow text-info" role="status"> <span class="sr-only">Loading...</span> </div>
+            <div class="spinner-grow text-light" role="status"> <span class="sr-only">Loading...</span> </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/UILayer/Varios/sweetalert.js"></script>
+<script src="~/Scripts/UILayer/Varios/generic.js"></script>
+<script src="~/Scripts/UILayer/Solicitud/Solicitud.js"></script>
