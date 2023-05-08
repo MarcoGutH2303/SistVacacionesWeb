@@ -16,6 +16,10 @@ namespace SistVacacionesWeb.Domain.Models
         public decimal DiasAdquiridos { get; set; }
         public decimal DiasConsumidos { get; set; }
         public decimal DiasPorConsumir { get; set; }
+        public bool AplicarAumentoDiasAdquiridosAutomatico { get; set; }
+        public int AplAmtDsAdquiridosAuto { get; set; }
+        public bool AplicarConsumoDiasAdquiridos { get; set; }
+        public int AplCsmDsAdquiridos { get; set; }
         public int Estado { get; set; }
         public string CodPersonal { get; set; }
         public string NombrePersonal { get; set; }

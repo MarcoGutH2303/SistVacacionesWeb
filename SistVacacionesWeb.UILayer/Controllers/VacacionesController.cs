@@ -55,13 +55,20 @@ namespace SistVacacionesWeb.UILayer.Controllers
         public int GrabarVacacionesPeriodo(VacacionesPeriodoModel oVacacionesPeriodoModel)
         {
             oVacacionesPeriodoModel.CodVacacionesPeriodo = oVacacionesPeriodoModel.CodVacacionesPeriodo == null ? "" : oVacacionesPeriodoModel.CodVacacionesPeriodo;
+            oVacacionesPeriodoModel.AplicarAumentoDiasAdquiridosAutomatico = oVacacionesPeriodoModel.AplAmtDsAdquiridosAuto == 1 ? true : false;
+            oVacacionesPeriodoModel.AplicarConsumoDiasAdquiridos = oVacacionesPeriodoModel.AplCsmDsAdquiridos == 1 ? true : false;
             oVacacionesPeriodoModel.CodEmpresa = CodEmpresa.Value;
-            return vacacionesPeriodoRepository.GrabarVacacionesPeriodo(oVacacionesPeriodoModel);
+            int result = vacacionesPeriodoRepository.GrabarVacacionesPeriodo(oVacacionesPeriodoModel);
+            vacacionesPeriodoRepository.AplicarAumentoAutomatico(CodEmpresa.Value);
+            return result;
         }
 
         public JsonResult RecuperarVacacionesPeriodo(string codVacacionesPeriodo, string codPersonal)
         {
-            return Json(vacacionesPeriodoRepository.RecuperarVacacionesPeriodo(codVacacionesPeriodo, codPersonal, CodEmpresa.Value),
+            var oVacacionesPeriodo = vacacionesPeriodoRepository.RecuperarVacacionesPeriodo(codVacacionesPeriodo, codPersonal, CodEmpresa.Value);
+            oVacacionesPeriodo.AplAmtDsAdquiridosAuto = oVacacionesPeriodo.AplicarAumentoDiasAdquiridosAutomatico == true ? 1 : 0;
+            oVacacionesPeriodo.AplCsmDsAdquiridos = oVacacionesPeriodo.AplicarConsumoDiasAdquiridos == true ? 1 : 0;
+            return Json(oVacacionesPeriodo,
                 JsonRequestBehavior.AllowGet);
         }
 
@@ -187,10 +194,12 @@ namespace SistVacacionesWeb.UILayer.Controllers
                     oVacacionesPeriodoModel.CodVacacionesPeriodo = "";
                     oVacacionesPeriodoModel.FechaInicioPeriodo = dr[1] == DBNull.Value ? DateTime.Now : DateTime.Parse(dr[1].ToString());
                     oVacacionesPeriodoModel.FechaFinPeriodo = dr[2] == DBNull.Value ? DateTime.Now : DateTime.Parse(dr[2].ToString());
-                    oVacacionesPeriodoModel.DiasAdquiridos = dr[3] == DBNull.Value ? 0 : decimal.Parse(dr[3].ToString());
-                    oVacacionesPeriodoModel.DiasConsumidos = dr[4] == DBNull.Value ? 0 : decimal.Parse(dr[4].ToString());
-                    oVacacionesPeriodoModel.DiasPorConsumir = dr[5] == DBNull.Value ? 0 : decimal.Parse(dr[5].ToString());
-                    oVacacionesPeriodoModel.Estado = dr[6] == DBNull.Value ? 0 : int.Parse(dr[6].ToString());
+                    oVacacionesPeriodoModel.AplicarAumentoDiasAdquiridosAutomatico = dr[3] == DBNull.Value ? false : (int.Parse(dr[3].ToString()) == 1 ? true : false);
+                    oVacacionesPeriodoModel.AplicarConsumoDiasAdquiridos = dr[4] == DBNull.Value ? false : (int.Parse(dr[4].ToString()) == 1 ? true : false);
+                    oVacacionesPeriodoModel.DiasAdquiridos = dr[5] == DBNull.Value ? 0 : decimal.Parse(dr[5].ToString());
+                    oVacacionesPeriodoModel.DiasConsumidos = dr[6] == DBNull.Value ? 0 : decimal.Parse(dr[6].ToString());
+                    oVacacionesPeriodoModel.DiasPorConsumir = dr[7] == DBNull.Value ? 0 : decimal.Parse(dr[7].ToString());
+                    oVacacionesPeriodoModel.Estado = dr[8] == DBNull.Value ? 0 : int.Parse(dr[8].ToString());
                     oVacacionesPeriodoModel.CodEmpresa = CodEmpresa.Value;
                     oVacacionesPeriodoModel.EstaBorrado = false;
                     if (vacacionesPeriodoRepository.GrabarVacacionesPeriodo(oVacacionesPeriodoModel) == 1)

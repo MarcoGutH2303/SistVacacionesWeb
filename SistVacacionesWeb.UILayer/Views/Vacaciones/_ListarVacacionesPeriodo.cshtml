@@ -52,9 +52,15 @@
                 "sWidth": "13%", "aTargets": [8],
                 "data": "CodVacacionesPeriodo",
                 "render": function (data, type, row) {
-                    return `<button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="EditarVacacionesPeriodo('` + data + `')"><i class="fas fa-pen"></i></button>` +
-                        `<button type="button" class="btn btn-danger btn-sm ms-2" onclick="EliminarVacacionesPeriodo('` + data + `')"><i class="fas fa-trash"></i></button>` +
-                        `<button type="button" class="btn btn-primary btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop1" onclick="VerConsumo('` + data + `', '` + row["CodPersonal"] + `', ` + row["DiasAdquiridos"] + `, ` + row["DiasConsumidos"] + `, ` + row["DiasPorConsumir"] + `)"><i class="fas fa-list-alt"></i></button>`;
+                    if (row["AplicarConsumoDiasAdquiridos"] == true) {
+                        return `<button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="EditarVacacionesPeriodo('` + data + `')"><i class="fas fa-pen"></i></button>` +
+                            `<button type="button" class="btn btn-danger btn-sm ms-2" onclick="EliminarVacacionesPeriodo('` + data + `')"><i class="fas fa-trash"></i></button>` +
+                            `<button type="button" class="btn btn-primary btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop1" onclick="VerConsumo('` + data + `', '` + row["CodPersonal"] + `', ` + row["DiasAdquiridos"] + `, ` + row["DiasConsumidos"] + `, ` + row["DiasPorConsumir"] + `)"><i class="fas fa-list-alt"></i></button>`;
+                    }
+                    else if (row["AplicarConsumoDiasAdquiridos"] == false) {
+                        return `<button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="EditarVacacionesPeriodo('` + data + `')"><i class="fas fa-pen"></i></button>` +
+                            `<button type="button" class="btn btn-danger btn-sm ms-2" onclick="EliminarVacacionesPeriodo('` + data + `')"><i class="fas fa-trash"></i></button>`;
+                    }
                 }
             }
         ],

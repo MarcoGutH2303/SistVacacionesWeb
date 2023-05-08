@@ -63,6 +63,8 @@ function NuevoVacacionesPeriodo() {
         $("#CodPersonalPeriodo").val(codPersonalSeleccionado);
         document.getElementById("staticBackdropLabel").innerHTML = "Nuevo Periodo";
         $("#staticBackdrop").modal("show");
+        document.getElementById("AplicarAumentoDiasAdquiridosAutomatico").value = "1";
+        document.getElementById("AplicarConsumoDiasAdquiridos").value = "1";
     }
     else {
         Error("Seleccione un Personal.");
@@ -136,6 +138,8 @@ function Limpiar(idform, excepciones = []) {
 
 function EditarVacacionesPeriodo(codVacacionesPeriodo) {
     Limpiar("frmVacacionesPeriodo");
+    document.getElementById("AplicarAumentoDiasAdquiridosAutomatico").value = "1";
+    document.getElementById("AplicarConsumoDiasAdquiridos").value = "1";
     document.getElementById("staticBackdropLabel").innerHTML = "Editar Periodo";
     setTimeout(recuperarGenericoEspecifico("Vacaciones/RecuperarVacacionesPeriodo/?codVacacionesPeriodo=" + codVacacionesPeriodo + "&codPersonal=" + codPersonalSeleccionado,
         "frmVacacionesPeriodo", [], false), 250);
@@ -367,6 +371,35 @@ function CargaComplemento(res) {
     document.getElementById("btnCerrarCarga").click();
     Correcto("Se ha cargado los Periodos correctamente.");
     Informacion("Información", "", 'Cantidad de periodos cargado: ' + res.split(':')[1]);
+}
+
+function changeFechaInicioPeriodo() {
+    var fechaString = getN("FechaInicioPeriodo");
+    var date = new Date(fechaString);
+    date.setMonth(date.getMonth() + 12);
+    date.setDate(date.getDate() - 1);
+    setN("FechaFinPeriodo", fixFecha(date));
+}
+
+function changeAplicarAumentoDiasAdquiridosAutomatico() {
+    if (document.getElementById("AplicarAumentoDiasAdquiridosAutomatico").checked == true) {
+        //alert("Activo");
+        $("#DiasAdquiridos").attr("readonly", "readonly");
+        $("#DiasAdquiridos").val(0);
+        $("#DiasConsumidos").attr("readonly", "readonly");
+        $("#DiasConsumidos").val(0);
+        $("#DiasPorConsumir").attr("readonly", "readonly");
+        $("#DiasPorConsumir").val(0);
+    }
+    else {
+        //alert("Inactivo");
+        $("#DiasAdquiridos").removeAttr("readonly");
+        $("#DiasAdquiridos").val("");
+        $("#DiasConsumidos").removeAttr("readonly");
+        $("#DiasConsumidos").val("");
+        $("#DiasPorConsumir").removeAttr("readonly");
+        $("#DiasPorConsumir").val("");
+    }
 }
 
 function ValidarCampos(tipo) {

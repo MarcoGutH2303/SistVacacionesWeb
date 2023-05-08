@@ -134,6 +134,8 @@ CREATE TABLE SVVacacionesPeriodo
 	CodVacacionesPeriodo CHAR(12), -- VAP
 	FechaInicioPeriodo DATETIME,
 	FechaFinPeriodo DATETIME,
+	AplicarAumentoDiasAdquiridosAutomatico BIT, -- Aumentar Dias Adquiridos Automatico
+	AplicarConsumoDiasAdquiridos BIT, -- Consumir Dias Adquiridos Antes De Cumplir El Año
 	DiasAdquiridos DECIMAL(6, 2),
 	DiasConsumidos DECIMAL(6, 2),
 	DiasPorConsumir DECIMAL(6, 2),
@@ -1226,6 +1228,8 @@ BEGIN
 			T0.CodVacacionesPeriodo,
 			T0.FechaInicioPeriodo,
 			T0.FechaFinPeriodo,
+			T0.AplicarAumentoDiasAdquiridosAutomatico,
+			T0.AplicarConsumoDiasAdquiridos,
 			T0.DiasAdquiridos,
 			T0.DiasConsumidos,
 			T0.DiasPorConsumir,
@@ -1248,6 +1252,8 @@ CREATE PROC spGrabarVacacionesPeriodo
 @CodVacacionesPeriodo CHAR(12),
 @FechaInicioPeriodo DATETIME,
 @FechaFinPeriodo DATETIME,
+@AplicarAumentoDiasAdquiridosAutomatico BIT,
+@AplicarConsumoDiasAdquiridos BIT,
 @DiasAdquiridos INT,
 @DiasConsumidos INT,
 @DiasPorConsumir INT,
@@ -1270,6 +1276,8 @@ BEGIN
 				@CodVacacionesPeriodo,
 				@FechaInicioPeriodo,
 				@FechaFinPeriodo,
+				@AplicarAumentoDiasAdquiridosAutomatico,
+				@AplicarConsumoDiasAdquiridos,
 				@DiasAdquiridos,
 				@DiasConsumidos,
 				@DiasPorConsumir,
@@ -1284,6 +1292,8 @@ BEGIN
 			UPDATE SVVacacionesPeriodo SET
 			FechaInicioPeriodo=@FechaInicioPeriodo,
 			FechaFinPeriodo=@FechaFinPeriodo,
+			AplicarAumentoDiasAdquiridosAutomatico=@AplicarAumentoDiasAdquiridosAutomatico,
+			AplicarConsumoDiasAdquiridos=@AplicarConsumoDiasAdquiridos,
 			DiasAdquiridos=@DiasAdquiridos,
 			DiasConsumidos=@DiasConsumidos,
 			DiasPorConsumir=@DiasPorConsumir,
@@ -1305,6 +1315,8 @@ BEGIN
 			T0.CodVacacionesPeriodo,
 			T0.FechaInicioPeriodo,
 			T0.FechaFinPeriodo,
+			T0.AplicarAumentoDiasAdquiridosAutomatico,
+			T0.AplicarConsumoDiasAdquiridos,
 			T0.DiasAdquiridos,
 			T0.DiasConsumidos,
 			T0.DiasPorConsumir,
@@ -1335,6 +1347,133 @@ BEGIN
 	WHERE CodVacacionesPeriodo=@CodVacacionesPeriodo
 	AND CodPersonal=@CodPersonal
 	AND CodEmpresa=@CodEmpresa;
+END;
+GO
+CREATE PROC spAumentoDiasAdquiridosPeriodoAutomatico
+@CodEmpresa CHAR(3)
+AS
+BEGIN
+	DECLARE @TBPersonal AS TABLE
+	(
+		IdPersonal INT,
+		CodPersonal CHAR(12),
+		Nombre VARCHAR(50),
+		Apellido VARCHAR(50),
+		Estado INT,
+		CodEmpresa CHAR(3),
+		EstaBorrado BIT
+	);
+	BEGIN
+		DECLARE @sqlConsultaPersonal NVARCHAR(MAX);
+		SET @sqlConsultaPersonal = 'SELECT IdPersonal,
+									CodPersonal,
+									Nombre,
+									Apellido,
+									Estado,
+									CodEmpresa,
+									EstaBorrado
+									FROM SVPersonal
+									WHERE CodEmpresa=''' + CAST(@CodEmpresa AS NVARCHAR(3)) + '''
+									AND EstaBorrado=0
+									ORDER BY IdPersonal';
+		INSERT INTO @TBPersonal
+		EXECUTE sp_executesql @sqlConsultaPersonal;
+	END;
+	
+	DECLARE @aumentador INT;
+	DECLARE @CodPersonal CHAR(12);
+	DECLARE cursorPersonal CURSOR 
+		FOR SELECT CodPersonal FROM @TBPersonal;
+	OPEN cursorPersonal;
+	FETCH NEXT FROM cursorPersonal INTO @CodPersonal;
+	IF @@FETCH_STATUS <> 0
+		PRINT '<<None>>'
+	WHILE @@FETCH_STATUS = 0
+		BEGIN
+			DECLARE @TBVacacionesPeriodo AS TABLE
+			(
+				IdVacacionesPeriodo INT,
+				CodVacacionesPeriodo CHAR(12), -- VAP
+				FechaInicioPeriodo DATETIME,
+				FechaFinPeriodo DATETIME,
+				DiasAdquiridos DECIMAL(6, 2),
+				DiasConsumidos DECIMAL(6, 2),
+				DiasPorConsumir DECIMAL(6, 2),
+				Estado INT,
+				CodPersonal CHAR(12),
+				CodEmpresa CHAR(3),
+				EstaBorrado BIT
+			);
+			BEGIN
+				DECLARE @sqlConsultaVacacionesPeriodo NVARCHAR(MAX);
+				SET @sqlConsultaVacacionesPeriodo = 'SELECT IdVacacionesPeriodo,
+													CodVacacionesPeriodo,
+													FechaInicioPeriodo,
+													FechaFinPeriodo,
+													DiasAdquiridos,
+													DiasConsumidos,
+													DiasPorConsumir,
+													Estado,
+													CodPersonal,
+													CodEmpresa,
+													EstaBorrado
+													FROM SVVacacionesPeriodo
+													WHERE CodPersonal=''' + CAST(@CodPersonal AS NVARCHAR(12)) + '''
+													AND CodEmpresa=''' + CAST(@CodEmpresa AS NVARCHAR(3)) + '''
+													AND AplicarAumentoDiasAdquiridosAutomatico=1
+													AND EstaBorrado=0
+													ORDER BY IdVacacionesPeriodo';
+				INSERT INTO @TBVacacionesPeriodo
+				EXECUTE sp_executesql @sqlConsultaVacacionesPeriodo;
+			END;
+
+			DECLARE @CodPersonalVP CHAR(12);
+			DECLARE @CodVacacionesPeriodoVP CHAR(12);
+			DECLARE @FechaInicioVP DATETIME;
+			DECLARE @FechaFinVP DATETIME;
+			DECLARE cursorVacacionesPeriodo CURSOR 
+				FOR SELECT CodPersonal, CodVacacionesPeriodo, FechaInicioPeriodo, FechaFinPeriodo FROM @TBVacacionesPeriodo;
+			OPEN cursorVacacionesPeriodo;
+			FETCH NEXT FROM cursorVacacionesPeriodo INTO @CodPersonalVP, @CodVacacionesPeriodoVP, @FechaInicioVP, @FechaFinVP;
+			IF @@FETCH_STATUS <> 0
+				PRINT '<<None>>'
+			WHILE @@FETCH_STATUS = 0
+			BEGIN
+				--SELECT @CodPersonalVP;
+				IF GETDATE() < @FechaFinVP
+					BEGIN
+						DECLARE @diasAdquiridos DECIMAL(6, 2) = 0;  
+						DECLARE @fecha DATETIME = @FechaInicioVP;
+						SET @fecha = DATEADD(DAY, -1, DATEADD(MONTH, 1, @fecha));
+						WHILE @fecha <= GETDATE()
+							BEGIN
+								SET @diasAdquiridos = @diasAdquiridos + 2.50;
+								SET @fecha = DATEADD(MONTH, 1, @fecha);
+							END;
+						UPDATE SVVacacionesPeriodo SET
+						DiasAdquiridos=@diasAdquiridos,
+						DiasPorConsumir=@diasAdquiridos-DiasConsumidos
+						WHERE CodVacacionesPeriodo=@CodVacacionesPeriodoVP
+						AND CodPersonal=@CodPersonalVP
+						AND CodEmpresa=@CodEmpresa;
+					END;
+				ELSE 
+					UPDATE SVVacacionesPeriodo SET
+					AplicarConsumoDiasAdquiridos=1,
+					DiasAdquiridos=30.00,
+					DiasPorConsumir=30.00-DiasConsumidos
+					WHERE CodVacacionesPeriodo=@CodVacacionesPeriodoVP
+					AND CodPersonal=@CodPersonalVP
+					AND CodEmpresa=@CodEmpresa;
+				FETCH NEXT FROM cursorVacacionesPeriodo INTO @CodPersonalVP, @CodVacacionesPeriodoVP, @FechaInicioVP, @FechaFinVP;
+			END
+			CLOSE cursorVacacionesPeriodo;
+			DEALLOCATE cursorVacacionesPeriodo;
+			DELETE FROM @TBVacacionesPeriodo;
+			FETCH NEXT FROM cursorPersonal INTO @CodPersonal;
+		END;
+	CLOSE cursorPersonal;
+	DEALLOCATE cursorPersonal;
 END;
 GO
 --
@@ -1443,9 +1582,9 @@ BEGIN
 			AND CodVacacionesPeriodo=@CodVacacionesPeriodo
 			AND CodPersonal=@CodPersonal
 			AND CodEmpresa=@CodEmpresa;
-			DECLARE @diasadquiridosa DECIMAL;
-			DECLARE @diasconsumidosa DECIMAL;
-			DECLARE @diasporconsumira DECIMAL;
+			DECLARE @diasadquiridosa DECIMAL(6, 2);
+			DECLARE @diasconsumidosa DECIMAL(6, 2);
+			DECLARE @diasporconsumira DECIMAL(6, 2);
 			SET @diasadquiridosa = (SELECT ISNULL(DiasAdquiridos, 0) 
 									FROM SVVacacionesPeriodo 
 									WHERE CodPersonal=@CodPersonal 
@@ -1524,9 +1663,9 @@ BEGIN
 	AND CodPersonal=@CodPersonal
 	AND CodEmpresa=@CodEmpresa;
 
-	DECLARE @diasadquiridosa DECIMAL;
-	DECLARE @diasconsumidosa DECIMAL;
-	DECLARE @diasporconsumira DECIMAL;
+	DECLARE @diasadquiridosa DECIMAL(6, 2);
+	DECLARE @diasconsumidosa DECIMAL(6, 2);
+	DECLARE @diasporconsumira DECIMAL(6, 2);
 	SET @diasadquiridosa = (SELECT ISNULL(DiasAdquiridos, 0) 
 							FROM SVVacacionesPeriodo 
 							WHERE CodPersonal=@CodPersonal 

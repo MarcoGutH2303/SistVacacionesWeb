@@ -14,5 +14,6 @@ namespace SistVacacionesWeb.Domain.RepositoriesContracts
         VacacionesPeriodoModel RecuperarVacacionesPeriodo(string codVacacionesPeriodo, string codPersonal, string codEmpresa);
         int EliminarVacacionesPeriodoFisico(string codVacacionesPeriodo, string codPersonal, string codEmpresa);
         int EliminarVacacionesPeriodoLogico(VacacionesPeriodoModel oVacacionesPeriodoModel);
+        int AplicarAumentoAutomatico(string codEmpresa);
     }
 }

@@ -456,11 +456,17 @@ function recuperarGenericoEspecifico(url, idFormulario, excepciones = [], adicio
                 else if (elementos[i].type != undefined && elementos[i].type.toUpperCase() == "CHECKBOX") {
                     //RECUPERAMOS
                     var propiedad = nombreName.replace("[]", "");
-                    var valores = res[propiedad];
-                    var valor;
-                    for (var k = 0; k < valores.length; k++) {
-                        valor = valores[k];
-                        setC("[type='checkbox'][value='" + valor + "']")
+                    var valor = res[propiedad];
+                    //var valor;
+                    //for (var k = 0; k < valores.length; k++) {
+                    //    valor = valores[k];
+                    //    setC("[type='checkbox'][value='" + valor + "']")
+                    //}
+                    if (valor == "1") {
+                        document.getElementsByName(propiedad)[0].checked = true;
+                    }
+                    else {
+                        document.getElementsByName(propiedad)[0].checked = false;
                     }
                 }
                 else {

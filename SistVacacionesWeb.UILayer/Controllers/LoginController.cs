@@ -17,6 +17,7 @@ namespace SistVacacionesWeb.UILayer.Controllers
         private IUsuarioRepository usuarioRepository = new UsuarioRepository();
         private IRolRepository rolRepository = new RolRepository();
         private IPersonalRepository personalRepository = new PersonalRepository();
+        private IVacacionesPeriodoRepository vacacionesPeriodoRepository = new VacacionesPeriodoRepository();
 
         // GET: Login
         public ActionResult Login()
@@ -50,6 +51,7 @@ namespace SistVacacionesWeb.UILayer.Controllers
 
         public int CargarSesion(string usuario, string pass, string codEmpresa, string rolUser, string codUsuario)
         {
+            vacacionesPeriodoRepository.AplicarAumentoAutomatico(codEmpresa == "" ? CodEmpresa.Value : codEmpresa);
             if (codEmpresa == "") { codEmpresa = CodEmpresa.Value; }
             if (usuario == "") { usuario = Usuario.Value; }
             if (pass == "") { pass = Pass.Value; }

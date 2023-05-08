@@ -63,25 +63,35 @@
                         </div>
                         <div class="col-md-4">
                             <label>Fecha Inicio Periodo</label>&nbsp;<label style="color: red">(*)</label>
-                            <input type="date" name="FechaInicioPeriodo" class="form-control" />
+                            <input type="date" name="FechaInicioPeriodo" class="form-control" onchange="changeFechaInicioPeriodo()"/>
                         </div>
                         <div class="col-md-4">
                             <label>Fecha Fin Periodo</label>&nbsp;<label style="color: red">(*)</label>
-                            <input type="date" name="FechaFinPeriodo" class="form-control" />
+                            <input type="date" name="FechaFinPeriodo" class="form-control" readonly />
+                        </div>
+                    </div>
+                    <div class="row pt-2 pb-2">
+                        <div class="col-md-4">
+                            <input type="checkbox" name="AplAmtDsAdquiridosAuto" value="1" id="AplicarAumentoDiasAdquiridosAutomatico" class="form-check-input" onchange="changeAplicarAumentoDiasAdquiridosAutomatico()"/>
+                            <label for="AplicarAumentoDiasAdquiridosAutomatico">Aplicar aumento automatico</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="checkbox" name="AplCsmDsAdquiridos" value="1" id="AplicarConsumoDiasAdquiridos" class="form-check-input" />
+                            <label for="AplicarConsumoDiasAdquiridos">Consumir dias adquiridos antes de finalizar periodo</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-4">
                             <label>Dias Adquiridos</label>&nbsp;<label style="color: red">(*)</label>
-                            <input type="text" name="DiasAdquiridos" class="form-control" />
+                            <input type="text" name="DiasAdquiridos" id="DiasAdquiridos" class="form-control" />
                         </div>
                         <div class="col-md-4">
                             <label>Dias Consumidos</label>&nbsp;<label style="color: red">(*)</label>
-                            <input type="text" name="DiasConsumidos" class="form-control" />
+                            <input type="text" name="DiasConsumidos" id="DiasConsumidos" class="form-control" />
                         </div>
                         <div class="col-md-4">
                             <label>Dias Por Consumir</label>&nbsp;<label style="color: red">(*)</label>
-                            <input type="text" name="DiasPorConsumir" class="form-control" />
+                            <input type="text" name="DiasPorConsumir" id="DiasPorConsumir" class="form-control" />
                         </div>
                     </div>
                     <div class="row">

@@ -16,6 +16,7 @@ namespace SistVacacionesWeb.DataAccessLayer.Repository
         private readonly string _grabar;
         private readonly string _recuperar;
         private readonly string _eliminar;
+        private readonly string _aplicarAumentoAuto;
 
         public VacacionesPeriodoRepository()
         {
@@ -23,6 +24,7 @@ namespace SistVacacionesWeb.DataAccessLayer.Repository
             _grabar = "spGrabarVacacionesPeriodo";
             _recuperar = "spRecuperarVacacionesPeriodo";
             _eliminar = "spEliminarVacacionesPeriodo";
+            _aplicarAumentoAuto = "spAumentoDiasAdquiridosPeriodoAutomatico";
         }
 
         public List<VacacionesPeriodoModel> ListarVacacionesPeriodo(string codPersonal, string codEmpresa)
@@ -48,6 +50,8 @@ namespace SistVacacionesWeb.DataAccessLayer.Repository
                                 oVacacionesPeriodoModel.CodVacacionesPeriodo = reader.IsDBNull(reader.GetOrdinal("CodVacacionesPeriodo")) ? "" : reader.GetString(reader.GetOrdinal("CodVacacionesPeriodo"));
                                 oVacacionesPeriodoModel.FechaInicioPeriodo = reader.IsDBNull(reader.GetOrdinal("FechaInicioPeriodo")) ? DateTime.Now : reader.GetDateTime(reader.GetOrdinal("FechaInicioPeriodo"));
                                 oVacacionesPeriodoModel.FechaFinPeriodo = reader.IsDBNull(reader.GetOrdinal("FechaFinPeriodo")) ? DateTime.Now : reader.GetDateTime(reader.GetOrdinal("FechaFinPeriodo"));
+                                oVacacionesPeriodoModel.AplicarAumentoDiasAdquiridosAutomatico = reader.IsDBNull(reader.GetOrdinal("AplicarAumentoDiasAdquiridosAutomatico")) ? false : reader.GetBoolean(reader.GetOrdinal("AplicarAumentoDiasAdquiridosAutomatico"));
+                                oVacacionesPeriodoModel.AplicarConsumoDiasAdquiridos = reader.IsDBNull(reader.GetOrdinal("AplicarConsumoDiasAdquiridos")) ? false : reader.GetBoolean(reader.GetOrdinal("AplicarConsumoDiasAdquiridos"));
                                 oVacacionesPeriodoModel.DiasAdquiridos = reader.IsDBNull(reader.GetOrdinal("DiasAdquiridos")) ? 0 : reader.GetDecimal(reader.GetOrdinal("DiasAdquiridos"));
                                 oVacacionesPeriodoModel.DiasConsumidos = reader.IsDBNull(reader.GetOrdinal("DiasConsumidos")) ? 0 : reader.GetDecimal(reader.GetOrdinal("DiasConsumidos"));
                                 oVacacionesPeriodoModel.DiasPorConsumir = reader.IsDBNull(reader.GetOrdinal("DiasPorConsumir")) ? 0 : reader.GetDecimal(reader.GetOrdinal("DiasPorConsumir"));
@@ -84,6 +88,8 @@ namespace SistVacacionesWeb.DataAccessLayer.Repository
                         cmd.Parameters.AddWithValue("@CodVacacionesPeriodo", oVacacionesPeriodoModel.CodVacacionesPeriodo);
                         cmd.Parameters.AddWithValue("@FechaInicioPeriodo", oVacacionesPeriodoModel.FechaInicioPeriodo);
                         cmd.Parameters.AddWithValue("@FechaFinPeriodo", oVacacionesPeriodoModel.FechaFinPeriodo);
+                        cmd.Parameters.AddWithValue("@AplicarAumentoDiasAdquiridosAutomatico", oVacacionesPeriodoModel.AplicarAumentoDiasAdquiridosAutomatico);
+                        cmd.Parameters.AddWithValue("@AplicarConsumoDiasAdquiridos", oVacacionesPeriodoModel.AplicarConsumoDiasAdquiridos);
                         cmd.Parameters.AddWithValue("@DiasAdquiridos", oVacacionesPeriodoModel.DiasAdquiridos);
                         cmd.Parameters.AddWithValue("@DiasConsumidos", oVacacionesPeriodoModel.DiasConsumidos);
                         cmd.Parameters.AddWithValue("@DiasPorConsumir", oVacacionesPeriodoModel.DiasPorConsumir);
@@ -123,6 +129,8 @@ namespace SistVacacionesWeb.DataAccessLayer.Repository
                                 oVacacionesPeriodoModel.Correlativo = reader.IsDBNull(reader.GetOrdinal("Correlativo")) ? 0 : Convert.ToInt32(reader.GetValue(reader.GetOrdinal("Correlativo")));
                                 oVacacionesPeriodoModel.IdVacacionesPeriodo = reader.IsDBNull(reader.GetOrdinal("IdVacacionesPeriodo")) ? 0 : reader.GetInt32(reader.GetOrdinal("IdVacacionesPeriodo"));
                                 oVacacionesPeriodoModel.CodVacacionesPeriodo = reader.IsDBNull(reader.GetOrdinal("CodVacacionesPeriodo")) ? "" : reader.GetString(reader.GetOrdinal("CodVacacionesPeriodo"));
+                                oVacacionesPeriodoModel.AplicarAumentoDiasAdquiridosAutomatico = reader.IsDBNull(reader.GetOrdinal("AplicarAumentoDiasAdquiridosAutomatico")) ? false : reader.GetBoolean(reader.GetOrdinal("AplicarAumentoDiasAdquiridosAutomatico"));
+                                oVacacionesPeriodoModel.AplicarConsumoDiasAdquiridos = reader.IsDBNull(reader.GetOrdinal("AplicarConsumoDiasAdquiridos")) ? false : reader.GetBoolean(reader.GetOrdinal("AplicarConsumoDiasAdquiridos"));
                                 oVacacionesPeriodoModel.FechaInicioPeriodo = reader.IsDBNull(reader.GetOrdinal("FechaInicioPeriodo")) ? DateTime.Now : reader.GetDateTime(reader.GetOrdinal("FechaInicioPeriodo"));
                                 oVacacionesPeriodoModel.FechaFinPeriodo = reader.IsDBNull(reader.GetOrdinal("FechaFinPeriodo")) ? DateTime.Now : reader.GetDateTime(reader.GetOrdinal("FechaFinPeriodo"));
                                 oVacacionesPeriodoModel.DiasAdquiridos = reader.IsDBNull(reader.GetOrdinal("DiasAdquiridos")) ? 0 : reader.GetDecimal(reader.GetOrdinal("DiasAdquiridos"));
@@ -185,6 +193,8 @@ namespace SistVacacionesWeb.DataAccessLayer.Repository
                         cmd.Parameters.AddWithValue("@CodVacacionesPeriodo", oVacacionesPeriodoModel.CodVacacionesPeriodo);
                         cmd.Parameters.AddWithValue("@FechaInicioPeriodo", oVacacionesPeriodoModel.FechaInicioPeriodo);
                         cmd.Parameters.AddWithValue("@FechaFinPeriodo", oVacacionesPeriodoModel.FechaFinPeriodo);
+                        cmd.Parameters.AddWithValue("@AplicarAumentoDiasAdquiridosAutomatico", oVacacionesPeriodoModel.AplicarAumentoDiasAdquiridosAutomatico);
+                        cmd.Parameters.AddWithValue("@AplicarConsumoDiasAdquiridos", oVacacionesPeriodoModel.AplicarConsumoDiasAdquiridos);
                         cmd.Parameters.AddWithValue("@DiasAdquiridos", oVacacionesPeriodoModel.DiasAdquiridos);
                         cmd.Parameters.AddWithValue("@DiasConsumidos", oVacacionesPeriodoModel.DiasConsumidos);
                         cmd.Parameters.AddWithValue("@DiasPorConsumir", oVacacionesPeriodoModel.DiasPorConsumir);
@@ -192,6 +202,29 @@ namespace SistVacacionesWeb.DataAccessLayer.Repository
                         cmd.Parameters.AddWithValue("@CodPersonal", oVacacionesPeriodoModel.CodPersonal);
                         cmd.Parameters.AddWithValue("@CodEmpresa", oVacacionesPeriodoModel.CodEmpresa);
                         cmd.Parameters.AddWithValue("@EstaBorrado", oVacacionesPeriodoModel.EstaBorrado);
+                        result = cmd.ExecuteNonQuery();
+                        return result;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return result;
+            }
+        }
+
+        public int AplicarAumentoAutomatico(string codEmpresa)
+        {
+            int result = 0;
+            try
+            {
+                using (var cn = GetSqlConnection())
+                {
+                    cn.Open();
+                    using (var cmd = new SqlCommand(_aplicarAumentoAuto, cn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@CodEmpresa", codEmpresa);
                         result = cmd.ExecuteNonQuery();
                         return result;
                     }
