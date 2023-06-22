@@ -40,12 +40,12 @@ function BuscarPersonalAutorizante() {
 function SelectPersonalAutorizante(codPersonal, nombreCompleto) {
     $("#CodPersonalAutorizante").val(codPersonal);
     $("#NombreCompletoAutorizante").val(nombreCompleto);
-    document.getElementById("btnCerrarPersonalAutorizante").click();
+    $("#btnCerrarPersonalAutorizante").click();
 }
 
 function NuevaAutorizacion() {
     LimpiarAutorizacion();
-    document.getElementById("staticBackdropLabel").innerHTML = "Nueva Autorizacion";
+    $("#staticBackdropLabel").html("Nueva Autorización");
 }
 
 function GuardarAutorizacion() {
@@ -68,12 +68,12 @@ function GuardarAutorizacion() {
 
     var frmAutorizacion = document.getElementById("frmAutorizacion");
     var frm = new FormData(frmAutorizacion);
-    var valor = $("#CodAutorizacion").val();
-    if (valor == undefined || valor == '') {
-        Confirmacion(undefined, "¿Desea guardar la Autorización?", function () {
+    var codAutorizacion = $("#CodAutorizacion").val();
+    if (codAutorizacion == undefined || codAutorizacion == '') {
+        Confirmacion("Confirmación", "¿Desea guardar la Autorización?", function () {
             fetchPostText("Autorizacion/GrabarAutorizacion", frm, function (res) {
                 if (res == "1") {
-                    document.getElementById("btnCerrarAutorizacion").click();
+                    $("#btnCerrarAutorizacion").click();
                     ListarAutorizacion();
                     LimpiarAutorizacion();
                     Correcto("Se ha guardado correctamente.");
@@ -86,10 +86,10 @@ function GuardarAutorizacion() {
         })
     }
     else {
-        Confirmacion(undefined, "¿Desea guardar los cambios de la Autorización?", function () {
+        Confirmacion("Confirmación", "¿Desea guardar los cambios de la Autorización?", function () {
             fetchPostText("Autorizacion/GrabarAutorizacion", frm, function (res) {
                 if (res == "1") {
-                    document.getElementById("btnCerrarAutorizacion").click();
+                    $("#btnCerrarAutorizacion").click();
                     ListarAutorizacion();
                     LimpiarAutorizacion();
                     Correcto("Se ha guardado correctamente.")
@@ -109,13 +109,13 @@ function LimpiarAutorizacion() {
 
 function EditarAutorizacion(CodAutorizacion) {
     LimpiarAutorizacion();
-    document.getElementById("staticBackdropLabel").innerHTML = "Editar Autorización";
+    $("#staticBackdropLabel").html("Editar Autorización");
     setTimeout(recuperarGenericoEspecifico("Autorizacion/RecuperarAutorizacion/?CodAutorizacion=" + CodAutorizacion,
         "frmAutorizacion", [], false), 250);
 }
 
 function EliminarAutorizacion(CodAutorizacion) {
-    Confirmacion("¿Desea eliminar la Autorización?", "Confirmar eliminación", function (res) {
+    Confirmacion("Confirmación", "¿Desea eliminar la Autorización?", function (res) {
         fetchGetText("Autorizacion/EliminarAutorizacionLogico/?CodAutorizacion=" + CodAutorizacion, function (rpta) {
             if (rpta == "1") {
                 ListarAutorizacion();
@@ -138,11 +138,11 @@ function SelecSolicitud(CodSolicitud, FechaSolicitud, NombreCompleto) {
     $("#CodSolicitud").val(CodSolicitud);
     $("#NombreCompletoSolicitante").val(NombreCompleto);
     $("#FechaSolicitud").val(fixFecha(FechaSolicitud));
-    document.getElementById("btnCerrarSolicitudPendiente").click();
+    $("#btnCerrarSolicitudPendiente").click();
 }
 
 function EnviarAutorizacionEmail(CodAutorizacion) {
-    Confirmacion("¿Desea enviar una notificación de la autorización a su personal?", "Confirmar envio", function (res) {
+    Confirmacion("Confirmación", "¿Desea enviar una notificación de la autorización a su personal?", function (res) {
         $("#progress").show();
         fetchGetText("Autorizacion/EnviarAutorizacionCorreo/?codAutorizacion=" + CodAutorizacion, function (rpta) {
             if (rpta == "1") {

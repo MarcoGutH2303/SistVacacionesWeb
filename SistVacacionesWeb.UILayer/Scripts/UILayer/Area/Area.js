@@ -21,7 +21,7 @@ function CargarCombobox() {
 function NuevaArea() {
     LimpiarArea();
     CargarCombobox();
-    document.getElementById("staticBackdropLabel").innerHTML = "Nueva Area";
+    $("#staticBackdropLabel").html("Nueva Area");
 }
 
 function GuardarArea() {
@@ -44,12 +44,12 @@ function GuardarArea() {
 
     var frmArea = document.getElementById("frmArea");
     var frm = new FormData(frmArea);
-    var valor = $("#CodArea").val();
-    if (valor == undefined || valor == '') {
-        Confirmacion(undefined, "¿Desea guardar el Area?", function () {
+    var codArea = $("#CodArea").val();
+    if (codArea == undefined || codArea == '') {
+        Confirmacion("Confirmación", "¿Desea guardar el Area?", function () {
             fetchPostText("Area/GrabarArea", frm, function (res) {
                 if (res == "1") {
-                    document.getElementById("btnCerrarArea").click();
+                    $("#btnCerrarArea").click();
                     ListarArea();
                     LimpiarArea();
                     Correcto("Se ha guardado correctamente.");
@@ -62,10 +62,10 @@ function GuardarArea() {
         })
     }
     else {
-        Confirmacion(undefined, "¿Desea guardar los cambios del Area?", function () {
+        Confirmacion("Confirmación", "¿Desea guardar los cambios del Area?", function () {
             fetchPostText("Area/GrabarArea", frm, function (res) {
                 if (res == "1") {
-                    document.getElementById("btnCerrarArea").click();
+                    $("#btnCerrarArea").click();
                     ListarArea();
                     LimpiarArea();
                     Correcto("Se ha guardado correctamente.")
@@ -86,13 +86,13 @@ function LimpiarArea() {
 function EditarArea(CodArea) {
     LimpiarArea();
     CargarCombobox();
-    document.getElementById("staticBackdropLabel").innerHTML = "Editar Area";
+    $("#staticBackdropLabel").html("Editar Area");
     setTimeout(recuperarGenericoEspecifico("Area/RecuperarArea/?CodArea=" + CodArea,
         "frmArea", [], false), 100);
 }
 
 function EliminarArea(CodArea) {
-    Confirmacion("¿Desea eliminar el Area?", "Confirmar eliminación", function (res) {
+    Confirmacion("Confirmación", "¿Desea eliminar el Area?", function (res) {
         fetchGetText("Area/EliminarAreaLogico/?CodArea=" + CodArea, function (rpta) {
             if (rpta == "1") {
                 ListarArea();

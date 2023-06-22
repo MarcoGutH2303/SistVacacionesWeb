@@ -96,7 +96,7 @@ function SeleccionarTodo() {
 
 function NuevoUsuario() {
     LimpiarUsuario();
-    document.getElementById("staticBackdropLabel").innerHTML = "Nueva Usuario";
+    $("#staticBackdropLabel").html("Nuevo Usuario");
     var checkboxes = document.querySelectorAll("#frmUsuario [type*='checkbox']");
     for (i = 0; i < checkboxes.length; i++)
         checkboxes[i].disabled = true;
@@ -122,12 +122,12 @@ function GuardarUsuario() {
 
     var frmUsuario = document.getElementById("frmUsuario");
     var frm = new FormData(frmUsuario);
-    var valor = $("#CodUsuario").val();
-    if (valor == undefined || valor == '') {
-        Confirmacion(undefined, "¿Desea guardar el Usuario?", function () {
+    var codUsuario = $("#CodUsuario").val();
+    if (codUsuario == undefined || codUsuario == '') {
+        Confirmacion("Confirmación", "¿Desea guardar el Usuario?", function () {
             fetchPostText("Usuario/GrabarUsuario", frm, function (res) {
                 if (res == "1") {
-                    document.getElementById("btnCerrarUsuario").click();
+                    $("#btnCerrarUsuario").click();
                     ListarUsuario();
                     LimpiarUsuario();
                     Correcto("Se ha guardado correctamente.");
@@ -148,10 +148,10 @@ function GuardarUsuario() {
         })
     }
     else {
-        Confirmacion(undefined, "¿Desea guardar los cambios del Usuario?", function () {
+        Confirmacion("Confirmación", "¿Desea guardar los cambios del Usuario?", function () {
             fetchPostText("Usuario/GrabarUsuario", frm, function (res) {
                 if (res == "1") {
-                    document.getElementById("btnCerrarUsuario").click();
+                    $("#btnCerrarUsuario").click();
                     ListarUsuario();
                     LimpiarUsuario();
                     Correcto("Se ha guardado correctamente.")
@@ -181,7 +181,7 @@ function EditarUsuario(CodUsuario, datoRol) {
     LimpiarUsuario();
     if (CodUsuario != "" && CodUsuario != undefined) {
         ocRol(datoRol);
-        document.getElementById("staticBackdropLabel").innerHTML = "Editar Usuario";
+        $("#staticBackdropLabel").html("Editar Usuario");
         LLenarDatosUsuario("Usuario/RecuperarUsuario/?codUsuario=" + CodUsuario,
             "frmUsuario", [], false);
         LLenarDatosRol("Usuario/RecuperarRol/?codUsuario=" + CodUsuario,
@@ -258,7 +258,7 @@ function LLenarDatosRol(url, idFormulario, excepciones = [], adicional = false, 
 }
 
 function EliminarUsuario(CodUsuario) {
-    Confirmacion("¿Desea eliminar el Usuario?", "Confirmar eliminación", function (res) {
+    Confirmacion("Confirmación", "¿Desea eliminar el Usuario?", function (res) {
         fetchGetText("Usuario/EliminarUsuarioLogico/?CodUsuario=" + CodUsuario, function (rpta) {
             if (rpta == "1") {
                 ListarUsuario();
@@ -273,7 +273,7 @@ function EliminarUsuario(CodUsuario) {
 }
 
 function EnviarCredencialesEmail(CodUsuario) {
-    Confirmacion("¿Desea enviar las credenciales al correo electronico del Personal?", "Confirmar envio", function (res) {
+    Confirmacion("Confirmación", "¿Desea enviar las credenciales al correo electronico del Personal?", function (res) {
         fetchGetText("Usuario/EnviarCredencialesCorreo/?codUsuario=" + CodUsuario, function (rpta) {
             if (rpta == "1") {
                 Correcto("Se envio las credenciales correctamente");

@@ -14,7 +14,7 @@ function ListarTipoDocumento() {
 
 function NuevoTipoDocumento() {
     LimpiarTipoDocumento();
-    document.getElementById("staticBackdropLabel").innerHTML = "Nuevo Tipo Documento";
+    $("#staticBackdropLabel").html("Nuevo Tipo Documento");
 }
 
 function GuardarTipoDocumento() {
@@ -37,12 +37,12 @@ function GuardarTipoDocumento() {
 
     var frmTipoDocumento = document.getElementById("frmTipoDocumento");
     var frm = new FormData(frmTipoDocumento);
-    var valor = $("#CodTipoDocumento").val();
-    if (valor == undefined || valor == '') {
-        Confirmacion(undefined, "¿Desea guardar el Tipo Documento?", function () {
+    var codTipoDocumento = $("#CodTipoDocumento").val();
+    if (codTipoDocumento == undefined || codTipoDocumento == '') {
+        Confirmacion("Confirmación", "¿Desea guardar el Tipo Documento?", function () {
             fetchPostText("TipoDocumento/GrabarTipoDocumento", frm, function (res) {
                 if (res == "1") {
-                    document.getElementById("btnCerrarTipoDocumento").click();
+                    $("#btnCerrarTipoDocumento").click();
                     ListarTipoDocumento();
                     LimpiarTipoDocumento();
                     Correcto("Se ha guardado correctamente.");
@@ -55,10 +55,10 @@ function GuardarTipoDocumento() {
         })
     }
     else {
-        Confirmacion(undefined, "¿Desea guardar los cambios del Tipo Documento?", function () {
+        Confirmacion("Confirmación", "¿Desea guardar los cambios del Tipo Documento?", function () {
             fetchPostText("TipoDocumento/GuardarTipoDocumento", frm, function (res) {
                 if (res == "1") {
-                    document.getElementById("btnCerrarTipoDocumento").click();
+                    $("#btnCerrarTipoDocumento").click();
                     ListarTipoDocumento();
                     LimpiarTipoDocumento();
                     Correcto("Se ha guardado correctamente.")
@@ -78,13 +78,13 @@ function LimpiarTipoDocumento() {
 
 function EditarTipoDocumento(CodTipoDocumento) {
     LimpiarTipoDocumento();
-    document.getElementById("staticBackdropLabel").innerHTML = "Editar Tipo Documento";
+    $("#staticBackdropLabel").html("Editar Tipo Documento");
     recuperarGenericoEspecifico("TipoDocumento/RecuperarTipoDocumento/?CodTipoDocumento=" + CodTipoDocumento,
         "frmTipoDocumento", [], false);
 }
 
 function EliminarTipoDocumento(CodTipoDocumento) {
-    Confirmacion("¿Desea eliminar el Tipo Documento?", "Confirmar eliminación", function (res) {
+    Confirmacion("Confirmación", "¿Desea eliminar el Tipo Documento?", function (res) {
         fetchGetText("TipoDocumento/EliminarTipoDocumentoLogico/?CodTipoDocumento=" + CodTipoDocumento, function (rpta) {
             if (rpta == "1") {
                 ListarTipoDocumento();

@@ -14,7 +14,7 @@ function ListarConcepto() {
 
 function NuevoConcepto() {
     LimpiarConcepto();
-    document.getElementById("staticBackdropLabel").innerHTML = "Nueva Concepto";
+    $("#staticBackdropLabel").html("Nuevo Concepto");
 }
 
 function GuardarConcepto() {
@@ -37,12 +37,12 @@ function GuardarConcepto() {
 
     var frmConcepto = document.getElementById("frmConcepto");
     var frm = new FormData(frmConcepto);
-    var valor = $("#CodConcepto").val();
-    if (valor == undefined || valor == '') {
-        Confirmacion(undefined, "¿Desea guardar el Concepto?", function () {
+    var codConcepto = $("#CodConcepto").val();
+    if (codConcepto == undefined || codConcepto == '') {
+        Confirmacion("Confirmación", "¿Desea guardar el Concepto?", function () {
             fetchPostText("Concepto/GrabarConcepto", frm, function (res) {
                 if (res == "1") {
-                    document.getElementById("btnCerrarConcepto").click();
+                    $("#btnCerrarConcepto").click();
                     ListarConcepto();
                     LimpiarConcepto();
                     Correcto("Se ha guardado correctamente.");
@@ -55,10 +55,10 @@ function GuardarConcepto() {
         })
     }
     else {
-        Confirmacion(undefined, "¿Desea guardar los cambios del Concepto?", function () {
+        Confirmacion("Confirmación", "¿Desea guardar los cambios del Concepto?", function () {
             fetchPostText("Concepto/GuardarConcepto", frm, function (res) {
                 if (res == "1") {
-                    document.getElementById("btnCerrarConcepto").click();
+                    $("#btnCerrarConcepto").click();
                     ListarConcepto();
                     LimpiarConcepto();
                     Correcto("Se ha guardado correctamente.")
@@ -78,13 +78,13 @@ function LimpiarConcepto() {
 
 function EditarConcepto(CodConcepto) {
     LimpiarConcepto();
-    document.getElementById("staticBackdropLabel").innerHTML = "Editar Concepto";
+    $("#staticBackdropLabel").html("Editar Concepto");
     setTimeout(recuperarGenericoEspecifico("Concepto/RecuperarConcepto/?CodConcepto=" + CodConcepto,
         "frmConcepto", [], false), 100);
 }
 
 function EliminarConcepto(CodConcepto) {
-    Confirmacion("¿Desea eliminar el Concepto?", "Confirmar eliminación", function (res) {
+    Confirmacion("Confirmación", "¿Desea eliminar el Concepto?", function (res) {
         fetchGetText("Concepto/EliminarConceptoLogico/?CodConcepto=" + CodConcepto, function (rpta) {
             if (rpta == "1") {
                 ListarConcepto();

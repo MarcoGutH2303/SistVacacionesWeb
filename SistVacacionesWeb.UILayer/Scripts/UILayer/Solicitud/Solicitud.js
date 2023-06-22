@@ -31,7 +31,7 @@ function CargarCombobox() {
 function NuevaSolicitud() {
     LimpiarSolicitud();
     CargarCombobox();
-    document.getElementById("staticBackdropLabel").innerHTML = "Nueva Solicitud";
+    $("#staticBackdropLabel").html("Nueva Solicitud");
 }
 
 function VerSolicitudGeneral() {
@@ -58,12 +58,12 @@ function GuardarSolicitud() {
 
     var frmSolicitud = document.getElementById("frmSolicitud");
     var frm = new FormData(frmSolicitud);
-    var valor = $("#CodSolicitud").val();
-    if (valor == undefined || valor == '') {
-        Confirmacion(undefined, "¿Desea guardar la Solicitud?", function () {
+    var codSolicitud = $("#CodSolicitud").val();
+    if (codSolicitud == undefined || codSolicitud == '') {
+        Confirmacion("Confirmación", "¿Desea guardar la Solicitud?", function () {
             fetchPostText("Solicitud/GrabarSolicitud", frm, function (res) {
                 if (res == "1") {
-                    document.getElementById("btnCerrarSolicitud").click();
+                    $("#btnCerrarSolicitud").click();
                     ListarSolicitudPendiente();
                     LimpiarSolicitud();
                     Correcto("Se ha guardado correctamente.");
@@ -76,10 +76,10 @@ function GuardarSolicitud() {
         })
     }
     else {
-        Confirmacion(undefined, "¿Desea guardar los cambios de la Solicitud?", function () {
+        Confirmacion("Confirmación", "¿Desea guardar los cambios de la Solicitud?", function () {
             fetchPostText("Solicitud/GrabarSolicitud", frm, function (res) {
                 if (res == "1") {
-                    document.getElementById("btnCerrarSolicitud").click();
+                    $("#btnCerrarSolicitud").click();
                     ListarSolicitudPendiente();
                     LimpiarSolicitud();
                     Correcto("Se ha guardado correctamente.")
@@ -100,13 +100,13 @@ function LimpiarSolicitud() {
 function EditarSolicitud(CodSolicitud) {
     LimpiarSolicitud();
     CargarCombobox();
-    document.getElementById("staticBackdropLabel").innerHTML = "Editar Solicitud";
+    $("#staticBackdropLabel").html("Editar Solicitud");
     setTimeout(recuperarGenericoEspecifico("Solicitud/RecuperarSolicitud/?CodSolicitud=" + CodSolicitud,
         "frmSolicitud", [], false), 250);
 }
 
 function EliminarSolicitud(CodSolicitud) {
-    Confirmacion("¿Desea eliminar el Solicitud?", "Confirmar eliminación", function (res) {
+    Confirmacion("Confirmación", "¿Desea eliminar el Solicitud?", function (res) {
         fetchGetText("Solicitud/EliminarSolicitudLogico/?CodSolicitud=" + CodSolicitud, function (rpta) {
             if (rpta == "1") {
                 ListarSolicitudPendiente();
@@ -143,7 +143,7 @@ function CalculoTiempo() {
 }
 
 function EnviarSolicitudEmail(CodSolicitud) {
-    Confirmacion("¿Desea enviar una notificación de la solicitud a su superior?", "Confirmar envio", function (res) {
+    Confirmacion("Confirmación", "¿Desea enviar una notificación de la solicitud a su superior?", function (res) {
         $("#progress").show();
         fetchGetText("Solicitud/EnviarSolicitudCorreo/?codSolicitud=" + CodSolicitud, function (rpta) {
             if (rpta == "1") {

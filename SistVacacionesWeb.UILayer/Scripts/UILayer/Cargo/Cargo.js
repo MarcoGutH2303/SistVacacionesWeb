@@ -21,7 +21,7 @@ function CargarCombobox() {
 function NuevoCargo() {
     LimpiarCargo();
     CargarCombobox();
-    document.getElementById("staticBackdropLabel").innerHTML = "Nuevo Cargo";
+    $("#staticBackdropLabel").html("Nuevo Cargo");
 }
 
 function GuardarCargo() {
@@ -44,12 +44,12 @@ function GuardarCargo() {
 
     var frmCargo = document.getElementById("frmCargo");
     var frm = new FormData(frmCargo);
-    var valor = $("#CodCargo").val();
-    if (valor == undefined || valor == '') {
-        Confirmacion(undefined, "¿Desea guardar el Cargo?", function () {
+    var codCargo = $("#CodCargo").val();
+    if (codCargo == undefined || codCargo == '') {
+        Confirmacion("Confirmación", "¿Desea guardar el Cargo?", function () {
             fetchPostText("Cargo/GrabarCargo", frm, function (res) {
                 if (res == "1") {
-                    document.getElementById("btnCerrarCargo").click();
+                    $("#btnCerrarCargo").click();
                     ListarCargo();
                     LimpiarCargo();
                     Correcto("Se ha guardado correctamente.");
@@ -62,10 +62,10 @@ function GuardarCargo() {
         })
     }
     else {
-        Confirmacion(undefined, "¿Desea guardar los cambios del Cargo?", function () {
+        Confirmacion("Confirmación", "¿Desea guardar los cambios del Cargo?", function () {
             fetchPostText("Cargo/GuardarCargo", frm, function (res) {
                 if (res == "1") {
-                    document.getElementById("btnCerrarCargo").click();
+                    $("#btnCerrarCargo").click();
                     ListarCargo();
                     LimpiarCargo();
                     Correcto("Se ha guardado correctamente.")
@@ -86,13 +86,13 @@ function LimpiarCargo() {
 function EditarCargo(CodCargo) {
     LimpiarCargo();
     CargarCombobox();
-    document.getElementById("staticBackdropLabel").innerHTML = "Editar Cargo";
+    $("#staticBackdropLabel").html("Editar Cargo");
     setTimeout(recuperarGenericoEspecifico("Cargo/RecuperarCargo/?CodCargo=" + CodCargo,
         "frmCargo", [], false), 100);
 }
 
 function EliminarCargo(CodCargo) {
-    Confirmacion("¿Desea eliminar el Cargo?", "Confirmar eliminación", function (res) {
+    Confirmacion("Confirmación", "¿Desea eliminar el Cargo?", function (res) {
         fetchGetText("Cargo/EliminarCargoLogico/?CodCargo=" + CodCargo, function (rpta) {
             if (rpta == "1") {
                 ListarCargo();

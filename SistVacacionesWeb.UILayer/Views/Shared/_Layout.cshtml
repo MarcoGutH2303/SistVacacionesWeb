@@ -89,14 +89,14 @@
     <input type="hidden" id="hdfOculto" value="@Url.Content("~")" />
     <script>
         function cerrarSesion() {
-            Confirmacion("Desea Cerrar Sesión?", "Confirmación", function (res) {
+            Confirmacion1("Desea Cerrar Sesión?", "Confirmación", function (res) {
                 var raiz = document.getElementById("hdfOculto").value;
                 var urlAbsoluta = window.location.protocol + "//" +
                     window.location.host + raiz + "Login/CerrarSesion";
                 document.location.href = urlAbsoluta;
             })
         }
-        function Confirmacion(texto = "Desea guardar los cambios?", title = "Confirmacion",
+        function Confirmacion1(texto = "Desea guardar los cambios?", title = "Confirmacion",
             callback) {
             return Swal.fire({
                 title: title,

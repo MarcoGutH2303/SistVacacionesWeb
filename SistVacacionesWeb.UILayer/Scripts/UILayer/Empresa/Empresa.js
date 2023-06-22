@@ -25,7 +25,7 @@ function PreviewLogo() {
 
 function NuevaEmpresa() {
     LimpiarEmpresa();
-    document.getElementById("staticBackdropLabel").innerHTML = "Nueva Empresa";
+    $("#staticBackdropLabel").html("Nueva Empresa");
 }
 
 function GuardarEmpresa() {
@@ -54,12 +54,12 @@ function GuardarEmpresa() {
 
     var frmEmpresa = document.getElementById("frmEmpresa");
     var frm = new FormData(frmEmpresa);
-    var valor = $("#CodEmpresa").val();
-    if (valor == undefined || valor == '') {
-        Confirmacion(undefined, "¿Desea crear la Empresa?", function () {
+    var codEmpresa = $("#CodEmpresa").val();
+    if (codEmpresa == undefined || codEmpresa == '') {
+        Confirmacion("Confirmación", "¿Desea crear la Empresa?", function () {
             fetchPostText("Empresa/GrabarEmpresa", frm, function (res) {
                 if (res == "1") {
-                    document.getElementById("btnCerrarEmpresa").click();
+                    $("#btnCerrarEmpresa").click();
                     ListarEmpresa();
                     LimpiarEmpresa();
                     Correcto("Se ha guardado correctamente.");
@@ -78,10 +78,10 @@ function GuardarEmpresa() {
         })
     }
     else {
-        Confirmacion(undefined, "¿Desea guardar los cambios de la Empresa?", function () {
+        Confirmacion("Confirmación", "¿Desea guardar los cambios de la Empresa?", function () {
             fetchPostText("Empresa/GrabarEmpresa", frm, function (res) {
                 if (res == "1") {
-                    document.getElementById("btnCerrarEmpresa").click();
+                    $("#btnCerrarEmpresa").click();
                     ListarEmpresa();
                     LimpiarEmpresa();
                     Correcto("Se ha guardado correctamente.")
@@ -105,7 +105,7 @@ function LimpiarEmpresa() {
 
 function EditarEmpresa(CodEmpresa) {
     LimpiarEmpresa();
-    document.getElementById("staticBackdropLabel").innerHTML = "Editar Empresa";
+    $("#staticBackdropLabel").html("Editar Empresa");
     setTimeout(recuperarGenericoEspecifico("Empresa/RecuperarEmpresa/?CodEmpresa=" + CodEmpresa,
         "frmEmpresa", [], false), 1000);
 }
@@ -115,7 +115,7 @@ function recuperarEspecifico(res) {
 }
 
 function EliminarEmpresa(CodEmpresa) {
-    Confirmacion("¿Desea eliminar la Empresa?", "Confirmar eliminación", function (res) {
+    Confirmacion("Confirmación", "¿Desea eliminar la Empresa?", function (res) {
         fetchGetText("Empresa/EliminarEmpresaLogico/?CodEmpresa=" + CodEmpresa, function (rpta) {
             if (rpta == "1") {
                 ListarEmpresa();

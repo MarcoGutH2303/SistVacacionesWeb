@@ -58,7 +58,7 @@ function Area() {
 function NuevoPersonal() {
     LimpiarPersonal();
     CargarCombobox();
-    document.getElementById("staticBackdropLabel").innerHTML = "Nuevo Personal";
+    $("#staticBackdropLabel").html("Nuevo Personal");
 }
 
 function GuardarPersonal() {
@@ -87,12 +87,12 @@ function GuardarPersonal() {
 
     var frmPersonal = document.getElementById("frmPersonal");
     var frm = new FormData(frmPersonal);
-    var valor = $("#CodPersonal").val();
-    if (valor == undefined || valor == '') {
-        Confirmacion(undefined, "¿Desea guardar el Personal?", function () {
+    var codPersonal = $("#CodPersonal").val();
+    if (codPersonal == undefined || codPersonal == '') {
+        Confirmacion("Confirmación", "¿Desea guardar el Personal?", function () {
             fetchPostText("Personal/GrabarPersonal", frm, function (res) {
                 if (res == "1") {
-                    document.getElementById("btnCerrarPersonal").click();
+                    $("#btnCerrarPersonal").click();
                     ListarPersonal();
                     LimpiarPersonal();
                     Correcto("Se ha guardado correctamente.");
@@ -109,10 +109,10 @@ function GuardarPersonal() {
         })
     }
     else {
-        Confirmacion(undefined, "¿Desea guardar los cambios del Personal?", function () {
+        Confirmacion("Confirmación", "¿Desea guardar los cambios del Personal?", function () {
             fetchPostText("Personal/GrabarPersonal", frm, function (res) {
                 if (res == "1") {
-                    document.getElementById("btnCerrarPersonal").click();
+                    $("#btnCerrarPersonal").click();
                     ListarPersonal();
                     LimpiarPersonal();
                     Correcto("Se ha guardado correctamente.")
@@ -150,7 +150,7 @@ function EditarPersonal(CodPersonal) {
 }
 
 function Complemento(CodPersonal) {
-    document.getElementById("staticBackdropLabel").innerHTML = "Editar Personal";
+    $("#staticBackdropLabel").html("Editar Personal");
     setTimeout(function () {
         recuperarGenericoEspecifico("Personal/RecuperarPersonal/?CodPersonal=" + CodPersonal,
             "frmPersonal", [], false);
@@ -158,7 +158,7 @@ function Complemento(CodPersonal) {
 }
 
 function EliminarPersonal(CodPersonal) {
-    Confirmacion("¿Desea eliminar el Personal?", "Confirmar eliminación", function (res) {
+    Confirmacion("Confirmación", "¿Desea eliminar el Personal?", function (res) {
         fetchGetText("Personal/EliminarPersonalLogico/?CodPersonal=" + CodPersonal, function (rpta) {
             if (rpta == "1") {
                 ListarPersonal();
@@ -203,7 +203,7 @@ function ProcesoCarga() {
 }
 
 function CargaComplemento(res) {
-    document.getElementById("btnCerrarCarga").click();
+    $("#btnCerrarCarga").click();
     Correcto("Se ha cargado el personal correctamente.");
     ListarPersonal();
 }

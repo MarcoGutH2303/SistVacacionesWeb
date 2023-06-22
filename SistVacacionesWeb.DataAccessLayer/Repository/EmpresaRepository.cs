@@ -127,6 +127,7 @@ namespace SistVacacionesWeb.DataAccessLayer.Repository
                                 cmd.Parameters.AddWithValue("@CodUsuario", oUsuarioModel.CodUsuario);
                                 cmd.Parameters.AddWithValue("@CodPersonal", oUsuarioModel.CodPersonal);
                                 cmd.Parameters.AddWithValue("@Usuario", oUsuarioModel.Usuario);
+                                cmd.Parameters.AddWithValue("@Llave", llave);
                                 cmd.Parameters.AddWithValue("@Pass", oUsuarioModel.Pass);
                                 cmd.Parameters.AddWithValue("@Rol", oUsuarioModel.Rol);
                                 cmd.Parameters.AddWithValue("@Estado", oUsuarioModel.Estado);

@@ -14,7 +14,7 @@ function ListarCentroCosto() {
 
 function NuevoCentroCosto() {
     LimpiarCentroCosto();
-    document.getElementById("staticBackdropLabel").innerHTML = "Nuevo Centro De Costo";
+    $("#staticBackdropLabel").html("Nuevo Centro De Costo");
 }
 
 function GuardarCentroCosto() {
@@ -37,12 +37,12 @@ function GuardarCentroCosto() {
 
     var frmCentroCosto = document.getElementById("frmCentroCosto");
     var frm = new FormData(frmCentroCosto);
-    var valor = $("#CodCentroCosto").val();
-    if (valor == undefined || valor == '') {
-        Confirmacion(undefined, "¿Desea guardar el Centro Costo?", function () {
+    var codCentroCosto = $("#CodCentroCosto").val();
+    if (codCentroCosto == undefined || codCentroCosto == '') {
+        Confirmacion("Confirmación", "¿Desea guardar el Centro Costo?", function () {
             fetchPostText("CentroCosto/GrabarCentroCosto", frm, function (res) {
                 if (res == "1") {
-                    document.getElementById("btnCerrarCentroCosto").click();
+                    $("#btnCerrarCentroCosto").click();
                     ListarCentroCosto();
                     LimpiarCentroCosto();
                     Correcto("Se ha guardado correctamente.");
@@ -55,10 +55,10 @@ function GuardarCentroCosto() {
         })
     }
     else {
-        Confirmacion(undefined, "¿Desea guardar los cambios del Centro Costo?", function () {
+        Confirmacion("Confirmación", "¿Desea guardar los cambios del Centro Costo?", function () {
             fetchPostText("CentroCosto/GuardarCentroCosto", frm, function (res) {
                 if (res == "1") {
-                    document.getElementById("btnCerrarCentroCosto").click();
+                    $("#btnCerrarCentroCosto").click();
                     ListarCentroCosto();
                     LimpiarCentroCosto();
                     Correcto("Se ha guardado correctamente.")
@@ -78,13 +78,13 @@ function LimpiarCentroCosto() {
 
 function EditarCentroCosto(CodCentroCosto) {
     LimpiarCentroCosto();
-    document.getElementById("staticBackdropLabel").innerHTML = "Editar Centro De Costo";
+    $("#staticBackdropLabel").html("Editar Centro De Costo");
     setTimeout(recuperarGenericoEspecifico("CentroCosto/RecuperarCentroCosto/?CodCentroCosto=" + CodCentroCosto,
         "frmCentroCosto", [], false), 100);
 }
 
 function EliminarCentroCosto(CodCentroCosto) {
-    Confirmacion("¿Desea eliminar el Centro Costo?", "Confirmar eliminación", function (res) {
+    Confirmacion("Confirmación", "¿Desea eliminar el Centro Costo?", function (res) {
         fetchGetText("CentroCosto/EliminarCentroCostoLogico/?CodCentroCosto=" + CodCentroCosto, function (rpta) {
             if (rpta == "1") {
                 ListarCentroCosto();
